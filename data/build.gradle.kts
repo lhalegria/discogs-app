@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.moshi)
