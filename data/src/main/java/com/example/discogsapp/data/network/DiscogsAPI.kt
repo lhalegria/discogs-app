@@ -1,5 +1,7 @@
 package com.example.discogsapp.data.network
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,6 +9,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val BASE_URL = "https://api.discogs.com/"
+
+private val moshi: Moshi = Moshi.Builder()
+    .addLast(KotlinJsonAdapterFactory())
+    .build()
 
 private fun loggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor =
     HttpLoggingInterceptor().apply {
@@ -39,5 +45,5 @@ fun retrofitAPI(
                 .addInterceptor(loggingInterceptor(isDebug))
                 .build(),
         )
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
