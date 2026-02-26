@@ -2,7 +2,7 @@ package com.example.discogsapp.domain.model
 
 data class ArtistImageModel(
     val uri: String,
-    val smallUri: String,
-    val width: Int,
-    val height: Int,
+    val smallUri: String = "",
+    val width: Int = 0,
+    val height: Int = 0,
 )
