@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "discogs-app"
-include(":app")
+include(":app", ":domain", ":data", ":di")
