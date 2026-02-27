@@ -15,6 +15,4 @@ fun NavController.openAlbum(args: AlbumRoute) {
     navigate(route = args)
 }
 
-fun NavGraphBuilder.albumScreen() = composable<AlbumRoute> {
-    AlbumScreen()
-}
+fun NavGraphBuilder.albumScreen() = composable<AlbumRoute> { AlbumScreen() }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -60,9 +59,10 @@ fun MainContent(
     onArtistSelected: (ArtistSummaryModel) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
     ) {
         OutlinedTextField(
             value = state.query,
@@ -72,18 +72,20 @@ fun MainContent(
             leadingIcon = { Text(text = "🔎") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSearchSubmitted() }),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
         )
 
-        val contentState = when {
-            !state.hasSearched -> ContentState.EmptyBeforeSearch
-            artists.loadState.refresh is LoadState.Loading -> ContentState.Loading
-            artists.loadState.refresh is LoadState.Error -> ContentState.Error
-            artists.itemCount == 0 -> ContentState.EmptyResults
-            else -> ContentState.Results
-        }
+        val contentState =
+            when {
+                !state.hasSearched -> ContentState.EmptyBeforeSearch
+                artists.loadState.refresh is LoadState.Loading -> ContentState.Loading
+                artists.loadState.refresh is LoadState.Error -> ContentState.Error
+                artists.itemCount == 0 -> ContentState.EmptyResults
+                else -> ContentState.Results
+            }
 
         AnimatedContent(
             targetState = contentState,
@@ -92,22 +94,11 @@ fun MainContent(
         ) { targetState ->
             when (targetState) {
                 ContentState.Loading -> {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    MainContentLoading()
                 }
 
                 ContentState.Error -> {
-                    val error = artists.loadState.refresh as? LoadState.Error
-                    Text(
-                        text = error?.error?.message ?: "Failed to fetch artists. Please try again.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
+                    MainContentError(artists.loadState.refresh as? LoadState.Error)
                 }
 
                 ContentState.EmptyBeforeSearch -> {
@@ -139,9 +130,10 @@ fun MainContent(
                             item {
                                 Box(
                                     contentAlignment = Alignment.Center,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
                                 ) {
                                     CircularProgressIndicator()
                                 }
@@ -152,6 +144,26 @@ fun MainContent(
             }
         }
     }
+}
+
+@Composable
+private fun MainContentLoading() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun MainContentError(error: LoadState.Error?) {
+    Text(
+        text = error?.error?.message ?: "Failed to fetch artists. Please try again.",
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.error,
+        modifier = Modifier.padding(horizontal = 16.dp),
+    )
 }
 
 @Composable
@@ -176,12 +188,13 @@ private fun ArtistRow(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .clickable(onClick = onClick)
-            .padding(12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .clickable(onClick = onClick)
+                .padding(12.dp),
     ) {
         ArtistThumbnail(artist = artist)
 
@@ -198,7 +211,7 @@ private fun ArtistRow(
 private fun ArtistThumbnail(artist: ArtistSummaryModel) {
     val url = artist.thumbnailUrl
 
-    if (url.isNullOrBlank()) {
+    if (url.isBlank()) {
         ArtistThumbnailPlaceholder(name = artist.title)
         return
     }
@@ -209,9 +222,10 @@ private fun ArtistThumbnail(artist: ArtistSummaryModel) {
         contentScale = ContentScale.Crop,
         loading = { ArtistThumbnailPlaceholder(name = artist.title) },
         error = { ArtistThumbnailPlaceholder(name = artist.title) },
-        modifier = Modifier
-            .size(52.dp)
-            .clip(CircleShape),
+        modifier =
+            Modifier
+                .size(52.dp)
+                .clip(CircleShape),
     )
 }
 
@@ -219,10 +233,11 @@ private fun ArtistThumbnail(artist: ArtistSummaryModel) {
 private fun ArtistThumbnailPlaceholder(name: String) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(52.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+        modifier =
+            Modifier
+                .size(52.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Text(
             text = name.take(1).uppercase(Locale.getDefault()).ifBlank { "?" },
@@ -251,28 +266,30 @@ private fun MainContentInitialPreview() {
 private fun MainContentResultsPreview() {
     MaterialTheme {
         MainContent(
-            state = MainState(
-                query = "Radiohead",
-                hasSearched = true,
-            ),
-            artists = flowOf(
-                PagingData.from(
-                    listOf(
-                        ArtistSummaryModel(
-                            id = 1,
-                            title = "Radiohead",
-                            thumbnailUrl = "",
-                            type = "artist",
-                        ),
-                        ArtistSummaryModel(
-                            id = 2,
-                            title = "Thom Yorke",
-                            thumbnailUrl = "",
-                            type = "artist",
+            state =
+                MainState(
+                    query = "Radiohead",
+                    hasSearched = true,
+                ),
+            artists =
+                flowOf(
+                    PagingData.from(
+                        listOf(
+                            ArtistSummaryModel(
+                                id = 1,
+                                title = "Radiohead",
+                                thumbnailUrl = "",
+                                type = "artist",
+                            ),
+                            ArtistSummaryModel(
+                                id = 2,
+                                title = "Thom Yorke",
+                                thumbnailUrl = "",
+                                type = "artist",
+                            ),
                         ),
                     ),
-                ),
-            ).collectAsLazyPagingItems(),
+                ).collectAsLazyPagingItems(),
             onQueryChanged = {},
             onSearchSubmitted = {},
             onArtistSelected = {},
@@ -285,12 +302,13 @@ private fun MainContentResultsPreview() {
 private fun ArtistRowPreview() {
     MaterialTheme {
         ArtistRow(
-            artist = ArtistSummaryModel(
-                id = 1,
-                title = "Massive Attack",
-                thumbnailUrl = "",
-                type = "artist",
-            ),
+            artist =
+                ArtistSummaryModel(
+                    id = 1,
+                    title = "Massive Attack",
+                    thumbnailUrl = "",
+                    type = "artist",
+                ),
             onClick = {},
         )
     }

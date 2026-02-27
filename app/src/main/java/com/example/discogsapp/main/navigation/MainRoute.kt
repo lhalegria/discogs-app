@@ -14,18 +14,17 @@ fun NavController.openMain() {
     navigate(route = MainRoute)
 }
 
-fun NavGraphBuilder.mainScreen(
-    navigateToDetail: (DetailRoute) -> Unit,
-) = composable<MainRoute> {
-    MainScreen(
-        onArtistSelected = { artist ->
-            navigateToDetail(
-                DetailRoute(
-                    artistId = artist.id,
-                    artistName = artist.title,
-                    artistThumbnail = artist.thumbnailUrl,
+fun NavGraphBuilder.mainScreen(navigateToDetail: (DetailRoute) -> Unit) =
+    composable<MainRoute> {
+        MainScreen(
+            onArtistSelected = { artist ->
+                navigateToDetail(
+                    DetailRoute(
+                        artistId = artist.id,
+                        artistName = artist.title,
+                        artistThumbnail = artist.thumbnailUrl,
+                    ),
                 )
-            )
-        },
-    )
-}
+            },
+        )
+    }

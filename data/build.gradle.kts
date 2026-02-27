@@ -7,10 +7,11 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-val localProps = Properties().apply {
-    val f = rootProject.file("local.properties")
-    if (f.exists()) f.inputStream().use { load(it) }
-}
+val localProps =
+    Properties().apply {
+        val f = rootProject.file("local.properties")
+        if (f.exists()) f.inputStream().use { load(it) }
+    }
 
 fun prop(name: String): String =
     providers.gradleProperty(name).orNull
@@ -19,10 +20,16 @@ fun prop(name: String): String =
 
 android {
     namespace = "com.example.discogsapp.data"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
         buildConfigField("String", "DISCOGS_API_KEY", "\"${prop("DISCOGS_API_KEY")}\"")
         buildConfigField("String", "DISCOGS_API_SECRET", "\"${prop("DISCOGS_API_SECRET")}\"")
     }

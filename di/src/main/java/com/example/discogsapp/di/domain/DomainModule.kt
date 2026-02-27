@@ -12,19 +12,12 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object DomainModule {
+    @Provides
+    fun provideSearchArtistsUseCase(artistRepository: ArtistRepository) = SearchArtistsUseCase(artistRepository)
 
     @Provides
-    fun provideSearchArtistsUseCase(
-        artistRepository: ArtistRepository,
-    ): SearchArtistsUseCase = SearchArtistsUseCase(artistRepository)
+    fun provideGetArtistDetailsUseCase(artistRepository: ArtistRepository) = GetArtistDetailsUseCase(artistRepository)
 
     @Provides
-    fun provideGetArtistDetailsUseCase(
-        artistRepository: ArtistRepository,
-    ): GetArtistDetailsUseCase = GetArtistDetailsUseCase(artistRepository)
-
-    @Provides
-    fun provideGetArtistReleasesUseCase(
-        artistRepository: ArtistRepository,
-    ): GetArtistReleasesUseCase = GetArtistReleasesUseCase(artistRepository)
+    fun provideGetArtistReleasesUseCase(artistRepository: ArtistRepository) = GetArtistReleasesUseCase(artistRepository)
 }

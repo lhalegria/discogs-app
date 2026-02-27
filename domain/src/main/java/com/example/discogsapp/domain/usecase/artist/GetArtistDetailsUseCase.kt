@@ -8,7 +8,5 @@ import kotlinx.coroutines.flow.Flow
 class GetArtistDetailsUseCase(
     private val artistRepository: ArtistRepository,
 ) : UseCase<Int, ArtistDetailsModel> {
-
-    override fun invoke(param: Int): Flow<ArtistDetailsModel> =
-        artistRepository.getArtistDetails(param)
+    override fun invoke(param: Int): Flow<ArtistDetailsModel> = artistRepository.getArtistDetails(param)
 }

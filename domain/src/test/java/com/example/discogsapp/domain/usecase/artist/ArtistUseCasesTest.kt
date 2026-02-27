@@ -19,69 +19,75 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ArtistUseCasesTest {
+    @Test
+    fun `SearchArtistsUseCase delegates to repository`() =
+        runTest {
+            val expected =
+                ArtistSearchResultModel(
+                    pagination = PaginationModel(page = 1, perPage = 30, pages = 1, items = 1),
+                    artists = listOf(ArtistSummaryModel(id = 1, title = "Justice", thumbnailUrl = "", type = "artist")),
+                )
+            val repository = mockk<ArtistRepository>()
+            val useCase = SearchArtistsUseCase(repository)
+            val query = ArtistSearchQueryModel(query = "justice", page = 1, perPage = 30)
+
+            every { repository.searchArtists(query) } returns flowOf(expected)
+
+            val result = useCase(query).first()
+
+            verify(exactly = 1) { repository.searchArtists(query) }
+            assertEquals(expected, result)
+        }
 
     @Test
-    fun `SearchArtistsUseCase delegates to repository`() = runTest {
-        val expected = ArtistSearchResultModel(
-            pagination = PaginationModel(page = 1, perPage = 30, pages = 1, items = 1),
-            artists = listOf(ArtistSummaryModel(id = 1, title = "Justice", thumbnailUrl = "", type = "artist")),
-        )
-        val repository = mockk<ArtistRepository>()
-        val useCase = SearchArtistsUseCase(repository)
-        val query = ArtistSearchQueryModel(query = "justice", page = 1, perPage = 30)
+    fun `GetArtistDetailsUseCase delegates to repository`() =
+        runTest {
+            val expected = ArtistDetailsModel(id = 7, name = "Bonobo")
+            val repository = mockk<ArtistRepository>()
+            val useCase = GetArtistDetailsUseCase(repository)
 
-        every { repository.searchArtists(query) } returns flowOf(expected)
+            every { repository.getArtistDetails(7) } returns flowOf(expected)
 
-        val result = useCase(query).first()
+            val result = useCase(7).first()
 
-        verify(exactly = 1) { repository.searchArtists(query) }
-        assertEquals(expected, result)
-    }
+            verify(exactly = 1) { repository.getArtistDetails(7) }
+            assertEquals(expected, result)
+        }
 
     @Test
-    fun `GetArtistDetailsUseCase delegates to repository`() = runTest {
-        val expected = ArtistDetailsModel(id = 7, name = "Bonobo")
-        val repository = mockk<ArtistRepository>()
-        val useCase = GetArtistDetailsUseCase(repository)
+    fun `GetArtistReleasesUseCase delegates to repository`() =
+        runTest {
+            val expected =
+                ArtistReleasesResultModel(
+                    pagination = PaginationModel(page = 1, perPage = 20, pages = 2, items = 40),
+                    releases =
+                        listOf(
+                            ArtistReleaseModel(
+                                id = 100,
+                                title = "Cross",
+                                year = 2007,
+                                role = "Main",
+                                type = "release",
+                                thumbnailUrl = "",
+                            ),
+                        ),
+                )
+            val repository = mockk<ArtistRepository>()
+            val useCase = GetArtistReleasesUseCase(repository)
+            val query =
+                ArtistReleasesQueryModel(
+                    artistId = 1000,
+                    page = 1,
+                    perPage = 20,
+                    sort = "year",
+                    sortOrder = "desc",
+                )
 
-        every { repository.getArtistDetails(7) } returns flowOf(expected)
+            every { repository.getArtistReleases(query) } returns flowOf(expected)
 
-        val result = useCase(7).first()
+            val result = useCase(query).first()
 
-        verify(exactly = 1) { repository.getArtistDetails(7) }
-        assertEquals(expected, result)
-    }
-
-    @Test
-    fun `GetArtistReleasesUseCase delegates to repository`() = runTest {
-        val expected = ArtistReleasesResultModel(
-            pagination = PaginationModel(page = 1, perPage = 20, pages = 2, items = 40),
-            releases = listOf(
-                ArtistReleaseModel(
-                    id = 100,
-                    title = "Cross",
-                    year = 2007,
-                    role = "Main",
-                    type = "release",
-                    thumbnailUrl = "",
-                ),
-            ),
-        )
-        val repository = mockk<ArtistRepository>()
-        val useCase = GetArtistReleasesUseCase(repository)
-        val query = ArtistReleasesQueryModel(
-            artistId = 1000,
-            page = 1,
-            perPage = 20,
-            sort = "year",
-            sortOrder = "desc",
-        )
-
-        every { repository.getArtistReleases(query) } returns flowOf(expected)
-
-        val result = useCase(query).first()
-
-        verify(exactly = 1) { repository.getArtistReleases(query) }
-        assertEquals(expected, result)
-    }
+            verify(exactly = 1) { repository.getArtistReleases(query) }
+            assertEquals(expected, result)
+        }
 }
