@@ -44,7 +44,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
@@ -64,7 +63,6 @@ android {
 }
 
 dependencies {
-
     implementation(project(":domain"))
     implementation(project(":di"))
     implementation(libs.androidx.core.ktx)
