@@ -25,6 +25,7 @@ fun ArtistSearchResult.toDomain(): ArtistSummaryModel =
     ArtistSummaryModel(
         id = id,
         title = title,
+        genres = genre.orEmpty(),
         thumbnailUrl = thumbnailUrl.orEmpty(),
         type = type,
     )
