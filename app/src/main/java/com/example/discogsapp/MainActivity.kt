@@ -3,12 +3,15 @@ package com.example.discogsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.discogsapp.navigation.MainRoute
+import com.example.discogsapp.navigation.albumScreen
+import com.example.discogsapp.navigation.detailsScreen
+import com.example.discogsapp.navigation.mainScreen
+import com.example.discogsapp.navigation.openAlbum
+import com.example.discogsapp.navigation.openDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,11 +20,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = MainRoute,
                 ) {
-                    Text(text = "Discogs App")
+                    mainScreen(navigateToDetail = navController::openDetail)
+                    detailsScreen(navigateToAlbums = navController::openAlbum)
+                    albumScreen()
                 }
             }
         }
