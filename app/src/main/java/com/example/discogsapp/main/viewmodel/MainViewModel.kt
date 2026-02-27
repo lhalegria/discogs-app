@@ -1,21 +1,47 @@
 package com.example.discogsapp.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.discogsapp.domain.model.ArtistSearchQueryModel
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.domain.usecase.artist.SearchArtistsUseCase
+import com.example.discogsapp.main.viewmodel.paging.ArtistSearchPagingSource
 import com.example.discogsapp.viewmodel.flow.StateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val searchArtistsUseCase: SearchArtistsUseCase,
 ) : StateViewModel<MainState>(MainState()) {
 
-    private var searchJob: Job? = null
+    private val searchQuery = MutableStateFlow<String?>(null)
+
+    val artistsPagingData: Flow<PagingData<ArtistSummaryModel>> =
+        searchQuery.flatMapLatest { query ->
+            if (query == null) {
+                emptyFlow()
+            } else {
+                Pager(
+                    config = PagingConfig(
+                        pageSize = PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                ) {
+                    ArtistSearchPagingSource(
+                        query = query,
+                        searchArtistsUseCase = searchArtistsUseCase,
+                    )
+                }.flow
+            }
+        }.cachedIn(viewModelScope)
 
     fun onQueryChanged(query: String) {
         setState { it.copy(query = query) }
@@ -27,47 +53,22 @@ class MainViewModel @Inject constructor(
             setState {
                 it.copy(
                     hasSearched = false,
-                    artists = emptyList(),
-                    errorMessage = null,
-                    isLoading = false,
                 )
             }
+            searchQuery.update { null }
             return
         }
 
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            setState {
-                it.copy(
-                    isLoading = true,
-                    hasSearched = true,
-                    errorMessage = null,
-                )
-            }
-
-            searchArtistsUseCase(
-                ArtistSearchQueryModel(
-                    query = query,
-                    page = 1,
-                    perPage = 20,
-                )
-            ).catch {
-                setState {
-                    it.copy(
-                        isLoading = false,
-                        artists = emptyList(),
-                        errorMessage = "Failed to fetch artists. Please try again.",
-                    )
-                }
-            }.collect { result ->
-                setState {
-                    it.copy(
-                        isLoading = false,
-                        artists = result.artists,
-                        errorMessage = null,
-                    )
-                }
-            }
+        setState {
+            it.copy(
+                hasSearched = true,
+            )
         }
+
+        searchQuery.update { query }
+    }
+
+    private companion object {
+        const val PAGE_SIZE = 30
     }
 }

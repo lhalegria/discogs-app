@@ -32,9 +32,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
+import kotlinx.coroutines.flow.flowOf
 import java.util.Locale
 
 private enum class ContentState {
@@ -48,6 +54,7 @@ private enum class ContentState {
 @Composable
 fun MainContent(
     state: MainState,
+    artists: LazyPagingItems<ArtistSummaryModel>,
     onQueryChanged: (String) -> Unit,
     onSearchSubmitted: () -> Unit,
     onArtistSelected: (ArtistSummaryModel) -> Unit,
@@ -71,10 +78,10 @@ fun MainContent(
         )
 
         val contentState = when {
-            state.isLoading -> ContentState.Loading
-            state.errorMessage != null -> ContentState.Error
             !state.hasSearched -> ContentState.EmptyBeforeSearch
-            state.artists.isEmpty() -> ContentState.EmptyResults
+            artists.loadState.refresh is LoadState.Loading -> ContentState.Loading
+            artists.loadState.refresh is LoadState.Error -> ContentState.Error
+            artists.itemCount == 0 -> ContentState.EmptyResults
             else -> ContentState.Results
         }
 
@@ -94,8 +101,9 @@ fun MainContent(
                 }
 
                 ContentState.Error -> {
+                    val error = artists.loadState.refresh as? LoadState.Error
                     Text(
-                        text = state.errorMessage.orEmpty(),
+                        text = error?.error?.message ?: "Failed to fetch artists. Please try again.",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -117,13 +125,27 @@ fun MainContent(
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         items(
-                            items = state.artists,
-                            key = { it.id },
-                        ) { artist ->
+                            count = artists.itemCount,
+                            key = artists.itemKey { it.id },
+                        ) { index ->
+                            val artist = artists[index] ?: return@items
                             ArtistRow(
                                 artist = artist,
                                 onClick = { onArtistSelected(artist) },
                             )
+                        }
+
+                        if (artists.loadState.append is LoadState.Loading) {
+                            item {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
                         }
                     }
                 }
@@ -216,6 +238,7 @@ private fun MainContentInitialPreview() {
     MaterialTheme {
         MainContent(
             state = MainState(),
+            artists = flowOf(PagingData.empty<ArtistSummaryModel>()).collectAsLazyPagingItems(),
             onQueryChanged = {},
             onSearchSubmitted = {},
             onArtistSelected = {},
@@ -231,21 +254,25 @@ private fun MainContentResultsPreview() {
             state = MainState(
                 query = "Radiohead",
                 hasSearched = true,
-                artists = listOf(
-                    ArtistSummaryModel(
-                        id = 1,
-                        title = "Radiohead",
-                        thumbnailUrl = "",
-                        type = "artist",
-                    ),
-                    ArtistSummaryModel(
-                        id = 2,
-                        title = "Thom Yorke",
-                        thumbnailUrl = "",
-                        type = "artist",
+            ),
+            artists = flowOf(
+                PagingData.from(
+                    listOf(
+                        ArtistSummaryModel(
+                            id = 1,
+                            title = "Radiohead",
+                            thumbnailUrl = "",
+                            type = "artist",
+                        ),
+                        ArtistSummaryModel(
+                            id = 2,
+                            title = "Thom Yorke",
+                            thumbnailUrl = "",
+                            type = "artist",
+                        ),
                     ),
                 ),
-            ),
+            ).collectAsLazyPagingItems(),
             onQueryChanged = {},
             onSearchSubmitted = {},
             onArtistSelected = {},

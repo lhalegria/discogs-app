@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.coil.compose)
 
     implementation(platform(libs.androidx.compose.bom))
