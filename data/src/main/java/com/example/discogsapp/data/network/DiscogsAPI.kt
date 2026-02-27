@@ -1,5 +1,6 @@
 package com.example.discogsapp.data.network
 
+import com.example.discogsapp.data.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
@@ -10,6 +11,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val BASE_URL = "https://api.discogs.com/"
 private const val DEFAULT_USER_AGENT = "DiscogsApp/1.0 +https://github.com/lhalegria/discogs-app"
+private val DEFAULT_AUTHORIZATION = "Discogs key=%s, secret=%s".format(
+    "DyVhOuvuyGAqAtkvupZN",
+    "eTYXEZeXtNaGGQnqFqRmOVFuLrWVyjWB",
+)
 
 private val moshi: Moshi = Moshi.Builder()
     .addLast(KotlinJsonAdapterFactory())
@@ -25,30 +30,23 @@ private fun loggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor =
         }
     }
 
-private fun headersInterceptor(
-    authorization: String,
-    userAgent: String,
-): Interceptor = Interceptor { chain ->
+private fun headersInterceptor(): Interceptor = Interceptor { chain ->
     val request = chain.request()
         .newBuilder()
-        .addHeader("Authorization", authorization)
-        .addHeader("User-Agent", userAgent)
+        .addHeader("Authorization", DEFAULT_AUTHORIZATION)
+        .addHeader("User-Agent", DEFAULT_USER_AGENT)
         .build()
 
     chain.proceed(request)
 }
 
-fun retrofitAPI(
-    authorization: String,
-    userAgent: String = DEFAULT_USER_AGENT,
-    isDebug: Boolean = false,
-): Retrofit =
+fun retrofitAPI(): Retrofit =
     Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(
             OkHttpClient.Builder()
-                .addInterceptor(headersInterceptor(authorization, userAgent))
-                .addInterceptor(loggingInterceptor(isDebug))
+                .addInterceptor(headersInterceptor())
+                .addInterceptor(loggingInterceptor(BuildConfig.DEBUG))
                 .build(),
         )
         .addConverterFactory(MoshiConverterFactory.create(moshi))
