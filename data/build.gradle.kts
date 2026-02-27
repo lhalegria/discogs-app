@@ -47,4 +47,8 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.hilt.android)
+
+    testImplementation(libs.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
