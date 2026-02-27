@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,22 +20,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.discogsapp.detail.viewmodel.DetailViewModel
-
-@Composable
-fun DetailRoute(viewModel: DetailViewModel = hiltViewModel()) {
-    DetailScreen(
-        artistId = viewModel.artistId,
-        artistName = viewModel.artistName,
-        artistThumbnail = viewModel.artistThumbnail,
-    )
-}
+import com.example.discogsapp.navigation.AlbumRoute
 
 @Composable
 fun DetailScreen(
     artistId: Int,
     artistName: String,
     artistThumbnail: String,
+    navigateToAlbum: (AlbumRoute) -> Unit,
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
+    viewModel.bind(artistId, artistName, artistThumbnail)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,5 +51,9 @@ fun DetailScreen(
         Text(text = artistName, style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Artist ID: $artistId", style = MaterialTheme.typography.bodyMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navigateToAlbum(AlbumRoute(artistId = artistId)) }) {
+            Text(text = "View Albums")
+        }
     }
 }
