@@ -2,11 +2,12 @@ package com.example.discogsapp.data.extension
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import retrofit2.HttpException
 
-private val moshi by lazy { Moshi.Builder().build() }
+private val moshi by lazy { Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build() }
 
 fun <T> Flow<T>.parseHttpError(): Flow<T> =
     catch { throwable ->
