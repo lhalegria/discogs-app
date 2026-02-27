@@ -187,10 +187,20 @@ private fun ArtistRow(
 
         Spacer(modifier = Modifier.size(12.dp))
 
-        Text(
-            text = artist.title,
-            style = MaterialTheme.typography.titleMedium,
-        )
+        Column {
+            Text(
+                text = artist.title,
+                style = MaterialTheme.typography.titleMedium,
+            )
+
+            if (artist.genres.isNotEmpty()) {
+                Text(
+                    text = artist.genres.joinToString(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
     }
 }
 
@@ -261,12 +271,14 @@ private fun MainContentResultsPreview() {
                         ArtistSummaryModel(
                             id = 1,
                             title = "Radiohead",
+                            genres = listOf("Rock", "Alternative"),
                             thumbnailUrl = "",
                             type = "artist",
                         ),
                         ArtistSummaryModel(
                             id = 2,
                             title = "Thom Yorke",
+                            genres = listOf("Electronic"),
                             thumbnailUrl = "",
                             type = "artist",
                         ),
@@ -288,6 +300,7 @@ private fun ArtistRowPreview() {
             artist = ArtistSummaryModel(
                 id = 1,
                 title = "Massive Attack",
+                genres = listOf("Electronic", "Trip Hop"),
                 thumbnailUrl = "",
                 type = "artist",
             ),
