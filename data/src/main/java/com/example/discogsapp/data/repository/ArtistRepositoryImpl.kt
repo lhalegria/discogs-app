@@ -1,5 +1,6 @@
 package com.example.discogsapp.data.repository
 
+import com.example.discogsapp.data.extension.parseHttpError
 import com.example.discogsapp.data.mapper.toDomain
 import com.example.discogsapp.data.service.DiscogsService
 import com.example.discogsapp.domain.model.ArtistDetailsModel
@@ -23,11 +24,11 @@ class ArtistRepositoryImpl(
                 perPage = query.perPage,
             ).toDomain(),
         )
-    }
+    }.parseHttpError()
 
     override fun getArtistDetails(artistId: Int): Flow<ArtistDetailsModel> = flow {
         emit(discogsService.getArtistDetails(artistId).toDomain())
-    }
+    }.parseHttpError()
 
     override fun getArtistReleases(query: ArtistReleasesQueryModel): Flow<ArtistReleasesResultModel> = flow {
         emit(
@@ -39,5 +40,5 @@ class ArtistRepositoryImpl(
                 sortOrder = query.sortOrder,
             ).toDomain(),
         )
-    }
+    }.parseHttpError()
 }
