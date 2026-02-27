@@ -1,7 +1,19 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+fun prop(name: String): String =
+    providers.gradleProperty(name).orNull
+        ?: localProps.getProperty(name)
+        ?: ""
 
 android {
     namespace = "com.example.discogsapp.data"
@@ -9,16 +21,8 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        buildConfigField(
-            "String",
-            "DISCOGS_API_KEY",
-            "\"${providers.gradleProperty("DISCOGS_API_KEY").orElse("").get()}\"",
-        )
-        buildConfigField(
-            "String",
-            "DISCOGS_API_SECRET",
-            "\"${providers.gradleProperty("DISCOGS_API_SECRET").orElse("").get()}\"",
-        )
+        buildConfigField("String", "DISCOGS_API_KEY", "\"${prop("DISCOGS_API_KEY")}\"")
+        buildConfigField("String", "DISCOGS_API_SECRET", "\"${prop("DISCOGS_API_SECRET")}\"")
     }
 
     buildFeatures {
