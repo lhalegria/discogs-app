@@ -10,9 +10,10 @@ import com.example.discogsapp.domain.model.ArtistSearchQueryModel
 import com.example.discogsapp.domain.model.ArtistSearchResultModel
 import com.example.discogsapp.domain.repository.ArtistRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
-class ArtistRepositoryImpl(
+class ArtistRepositoryImpl @Inject constructor(
     private val discogsService: DiscogsService,
 ) : ArtistRepository {
 

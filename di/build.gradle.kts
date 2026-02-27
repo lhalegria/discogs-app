@@ -32,7 +32,11 @@ android {
 
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     implementation(libs.hilt.android)
+    implementation(libs.retrofit)
     kapt(libs.hilt.compiler)
 }
 

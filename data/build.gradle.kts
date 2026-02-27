@@ -36,4 +36,5 @@ dependencies {
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.hilt.android)
 }
