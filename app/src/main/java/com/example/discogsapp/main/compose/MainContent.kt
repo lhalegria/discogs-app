@@ -24,13 +24,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.example.discogsapp.domain.model.ArtistSummaryModel
@@ -58,9 +58,6 @@ fun MainContent(
             .systemBarsPadding(),
     ) {
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
             value = state.query,
             onValueChange = onQueryChanged,
             label = { Text(text = "Search artist") },
@@ -68,6 +65,9 @@ fun MainContent(
             leadingIcon = { Text(text = "🔎") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSearchSubmitted() }),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
         )
 
         val contentState = when {
@@ -80,22 +80,25 @@ fun MainContent(
 
         AnimatedContent(
             targetState = contentState,
-            modifier = Modifier.fillMaxSize(),
             label = "main-content-state",
+            modifier = Modifier.fillMaxSize(),
         ) { targetState ->
             when (targetState) {
                 ContentState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
                         CircularProgressIndicator()
                     }
                 }
 
                 ContentState.Error -> {
                     Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
                         text = state.errorMessage.orEmpty(),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(horizontal = 16.dp),
                     )
                 }
 
@@ -109,9 +112,9 @@ fun MainContent(
 
                 ContentState.Results -> {
                     LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(vertical = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         items(
                             items = state.artists,
@@ -132,10 +135,9 @@ fun MainContent(
 @Composable
 private fun EmptyStateMessage(message: String) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 48.dp),
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize(),
     ) {
         Text(
             text = message,
@@ -151,13 +153,13 @@ private fun ArtistRow(
     onClick: () -> Unit,
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onClick)
             .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
     ) {
         ArtistThumbnail(artist = artist)
 
@@ -182,23 +184,23 @@ private fun ArtistThumbnail(artist: ArtistSummaryModel) {
     SubcomposeAsyncImage(
         model = url,
         contentDescription = artist.title,
-        modifier = Modifier
-            .size(52.dp)
-            .clip(CircleShape),
         contentScale = ContentScale.Crop,
         loading = { ArtistThumbnailPlaceholder(name = artist.title) },
         error = { ArtistThumbnailPlaceholder(name = artist.title) },
+        modifier = Modifier
+            .size(52.dp)
+            .clip(CircleShape),
     )
 }
 
 @Composable
 private fun ArtistThumbnailPlaceholder(name: String) {
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(52.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surfaceVariant),
-        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = name.take(1).uppercase(Locale.getDefault()).ifBlank { "?" },
@@ -207,7 +209,6 @@ private fun ArtistThumbnailPlaceholder(name: String) {
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
