@@ -37,6 +37,7 @@ class MainViewModel @Inject constructor(
                 ) {
                     ArtistSearchPagingSource(
                         query = query,
+                        pageSize = PAGE_SIZE,
                         searchArtistsUseCase = searchArtistsUseCase,
                     )
                 }.flow

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.first
 
 class ArtistSearchPagingSource(
     private val query: String,
+    private val pageSize: Int,
     private val searchArtistsUseCase: SearchArtistsUseCase,
 ) : PagingSource<Int, ArtistSummaryModel>() {
 
@@ -20,7 +21,7 @@ class ArtistSearchPagingSource(
                 ArtistSearchQueryModel(
                     query = query,
                     page = currentPage,
-                    perPage = params.loadSize,
+                    perPage = pageSize,
                 ),
             ).first()
 
