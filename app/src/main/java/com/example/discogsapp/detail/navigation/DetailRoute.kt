@@ -1,10 +1,11 @@
-package com.example.discogsapp.navigation
+package com.example.discogsapp.detail.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.discogsapp.detail.compose.DetailScreen
+import com.example.discogsapp.album.navigation.AlbumRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
