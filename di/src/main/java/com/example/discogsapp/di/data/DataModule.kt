@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
-
     @Binds
     @Singleton
     abstract fun bindArtistRepository(artistRepositoryImpl: ArtistRepositoryImpl): ArtistRepository
@@ -22,7 +21,6 @@ abstract class DataModule {
     companion object {
         @Provides
         @Singleton
-        fun provideDiscogsService(): DiscogsService =
-            retrofitAPI().create(DiscogsService::class.java)
+        fun provideDiscogsService(): DiscogsService = retrofitAPI().create(DiscogsService::class.java)
     }
 }

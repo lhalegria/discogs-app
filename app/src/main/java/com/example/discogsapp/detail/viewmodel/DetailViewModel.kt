@@ -5,8 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
-) : ViewModel() {
+class DetailViewModel @Inject constructor() : ViewModel() {
     var artistId: Int = 0
         private set
 
@@ -16,7 +15,11 @@ class DetailViewModel @Inject constructor(
     var artistThumbnail: String = ""
         private set
 
-    fun bind(artistId: Int, artistName: String, artistThumbnail: String) {
+    fun bind(
+        artistId: Int,
+        artistName: String,
+        artistThumbnail: String,
+    ) {
         this.artistId = artistId
         this.artistName = artistName
         this.artistThumbnail = artistThumbnail

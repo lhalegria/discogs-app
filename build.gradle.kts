@@ -20,12 +20,10 @@ subprojects {
     }
 }
 
-tasks.register("installGitHooks") {
+tasks.register<Exec>("installGitHooks") {
     group = "build setup"
     description = "Configures Git to use the repository hook scripts."
-    doLast {
-        exec {
-            commandLine("git", "config", "core.hooksPath", ".githooks")
-        }
-    }
+
+    workingDir = rootDir
+    commandLine("git", "config", "core.hooksPath", ".githooks")
 }

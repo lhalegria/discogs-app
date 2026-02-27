@@ -2,8 +2,8 @@ package com.example.discogsapp.detail.compose
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.discogsapp.detail.viewmodel.DetailViewModel
 import com.example.discogsapp.album.navigation.AlbumRoute
+import com.example.discogsapp.detail.viewmodel.DetailViewModel
 
 @Composable
 fun DetailScreen(
@@ -19,6 +19,6 @@ fun DetailScreen(
         artistId,
         artistName,
         artistThumbnail,
-        navigateToAlbum
+        navigateToAlbum,
     )
 }

@@ -6,44 +6,46 @@ import com.example.discogsapp.domain.model.ArtistSearchQueryModel
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.domain.usecase.artist.SearchArtistsUseCase
 import kotlinx.coroutines.flow.first
+import java.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
 
 class ArtistSearchPagingSource(
     private val query: String,
     private val pageSize: Int,
     private val searchArtistsUseCase: SearchArtistsUseCase,
 ) : PagingSource<Int, ArtistSummaryModel>() {
+    override fun getRefreshKey(state: PagingState<Int, ArtistSummaryModel>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArtistSummaryModel> {
         val currentPage = params.key ?: 1
 
         return try {
-            val result = searchArtistsUseCase(
-                ArtistSearchQueryModel(
-                    query = query,
-                    page = currentPage,
-                    perPage = pageSize,
-                ),
-            ).first()
+            val result =
+                searchArtistsUseCase(
+                    ArtistSearchQueryModel(
+                        query = query,
+                        page = currentPage,
+                        perPage = pageSize,
+                    ),
+                ).first()
 
-            val nextPage = if (currentPage >= result.pagination.pages) {
-                null
-            } else {
-                currentPage + 1
-            }
+            val nextPage = if (currentPage >= result.pagination.pages) null else currentPage + 1
 
             LoadResult.Page(
                 data = result.artists,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
                 nextKey = nextPage,
             )
-        } catch (throwable: Throwable) {
-            LoadResult.Error(throwable)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: Exception) {
+            LoadResult.Error(e)
         }
     }
-
-    override fun getRefreshKey(state: PagingState<Int, ArtistSummaryModel>): Int? =
-        state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-        }
 }

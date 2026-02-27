@@ -28,18 +28,20 @@ fun DetailContent(
     navigateToAlbum: (AlbumRoute) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         AsyncImage(
             model = artistThumbnail,
             contentDescription = artistName,
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape),
+            modifier =
+                Modifier
+                    .size(120.dp)
+                    .clip(CircleShape),
             contentScale = ContentScale.Crop,
         )
         Spacer(modifier = Modifier.height(16.dp))

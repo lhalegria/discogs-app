@@ -1,4 +1,9 @@
 root = true
 
 [*.{kt,kts}]
-ktlint_function_naming_ignore_when_annotated_with=Composable
+
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_standard_no-blank-line-before-class-body = disabled
+ktlint_standard_annotation = disabled
+ktlint_standard_argument-list-wrapping = disabled
+ktlint_standard_function-signature= disabled
