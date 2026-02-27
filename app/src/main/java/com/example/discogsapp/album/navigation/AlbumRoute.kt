@@ -1,4 +1,4 @@
-package com.example.discogsapp.navigation
+package com.example.discogsapp.album.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
