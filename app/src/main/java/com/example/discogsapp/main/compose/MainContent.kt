@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -204,5 +205,73 @@ private fun ArtistThumbnailPlaceholder(name: String) {
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun MainContentInitialPreview() {
+    MaterialTheme {
+        MainContent(
+            state = MainState(),
+            onQueryChanged = {},
+            onSearchSubmitted = {},
+            onArtistSelected = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MainContentResultsPreview() {
+    MaterialTheme {
+        MainContent(
+            state = MainState(
+                query = "Radiohead",
+                hasSearched = true,
+                artists = listOf(
+                    ArtistSummaryModel(
+                        id = 1,
+                        title = "Radiohead",
+                        thumbnailUrl = "",
+                        type = "artist",
+                    ),
+                    ArtistSummaryModel(
+                        id = 2,
+                        title = "Thom Yorke",
+                        thumbnailUrl = "",
+                        type = "artist",
+                    ),
+                ),
+            ),
+            onQueryChanged = {},
+            onSearchSubmitted = {},
+            onArtistSelected = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ArtistRowPreview() {
+    MaterialTheme {
+        ArtistRow(
+            artist = ArtistSummaryModel(
+                id = 1,
+                title = "Massive Attack",
+                thumbnailUrl = "",
+                type = "artist",
+            ),
+            onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ArtistThumbnailPlaceholderPreview() {
+    MaterialTheme {
+        ArtistThumbnailPlaceholder(name = "Portishead")
     }
 }
