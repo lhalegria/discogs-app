@@ -45,28 +45,18 @@ class MainViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
 
     fun onQueryChanged(query: String) {
-        setState { it.copy(query = query) }
-    }
-
-    fun onSearchSubmitted() {
-        val query = state.value.query.trim()
-        if (query.isBlank()) {
-            setState {
-                it.copy(
-                    hasSearched = false,
-                )
-            }
-            searchQuery.update { null }
-            return
-        }
-
         setState {
             it.copy(
-                hasSearched = true,
+                query = query,
+                hasSearched = query.trim().isNotBlank(),
             )
         }
 
-        searchQuery.update { query }
+        searchQuery.update { query.trim().takeIf(String::isNotBlank) }
+    }
+
+    fun onSearchSubmitted() {
+        onQueryChanged(state.value.query)
     }
 
     private companion object {
