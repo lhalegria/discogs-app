@@ -1,6 +1,5 @@
 package com.example.discogsapp
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.discogsapp.detail.compose.DetailRoute
 import com.example.discogsapp.main.compose.MainRoute
+import com.example.discogsapp.navigation.AppRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,23 +23,28 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = MAIN_ROUTE,
+                    startDestination = AppRoute.Main.route,
                 ) {
-                    composable(route = MAIN_ROUTE) {
+                    composable(route = AppRoute.Main.route) {
                         MainRoute(
                             onArtistSelected = { artist ->
-                                val destination = "$DETAIL_ROUTE/${artist.id}/${Uri.encode(artist.title)}/${Uri.encode(artist.thumbnailUrl)}"
-                                navController.navigate(destination)
+                                navController.navigate(
+                                    AppRoute.Detail(
+                                        artistId = artist.id,
+                                        artistName = artist.title,
+                                        artistThumbnail = artist.thumbnailUrl,
+                                    ).route
+                                )
                             },
                         )
                     }
 
                     composable(
-                        route = "$DETAIL_ROUTE/{artistId}/{artistName}/{artistThumbnail}",
+                        route = AppRoute.Detail.routePattern,
                         arguments = listOf(
-                            navArgument("artistId") { type = NavType.IntType },
-                            navArgument("artistName") { type = NavType.StringType },
-                            navArgument("artistThumbnail") { type = NavType.StringType },
+                            navArgument(AppRoute.Detail.artistIdArg) { type = NavType.IntType },
+                            navArgument(AppRoute.Detail.artistNameArg) { type = NavType.StringType },
+                            navArgument(AppRoute.Detail.artistThumbnailArg) { type = NavType.StringType },
                         ),
                     ) {
                         DetailRoute()
@@ -47,10 +52,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private companion object {
-        const val MAIN_ROUTE = "main"
-        const val DETAIL_ROUTE = "detail"
     }
 }
