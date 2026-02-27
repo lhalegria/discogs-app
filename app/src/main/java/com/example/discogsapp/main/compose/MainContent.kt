@@ -1,34 +1,48 @@
 package com.example.discogsapp.main.compose
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
+import java.util.Locale
+
+private enum class ContentState {
+    Loading,
+    Error,
+    EmptyBeforeSearch,
+    EmptyResults,
+    Results,
+}
 
 @Composable
 fun MainContent(
@@ -40,61 +54,73 @@ fun MainContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .systemBarsPadding(),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            OutlinedTextField(
-                modifier = Modifier.weight(1f),
-                value = state.query,
-                onValueChange = onQueryChanged,
-                label = { Text(text = "Search artist") },
-                singleLine = true,
-            )
-            TextButton(onClick = onSearchSubmitted) {
-                Text(text = "Search")
-            }
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            value = state.query,
+            onValueChange = onQueryChanged,
+            label = { Text(text = "Search artist") },
+            singleLine = true,
+            leadingIcon = { Text(text = "🔎") },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { onSearchSubmitted() }),
+        )
+
+        val contentState = when {
+            state.isLoading -> ContentState.Loading
+            state.errorMessage != null -> ContentState.Error
+            !state.hasSearched -> ContentState.EmptyBeforeSearch
+            state.artists.isEmpty() -> ContentState.EmptyResults
+            else -> ContentState.Results
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        AnimatedContent(
+            targetState = contentState,
+            modifier = Modifier.fillMaxSize(),
+            label = "main-content-state",
+        ) { targetState ->
+            when (targetState) {
+                ContentState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
 
-        when {
-            state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            }
+                ContentState.Error -> {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = state.errorMessage.orEmpty(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
 
-            state.errorMessage != null -> {
-                Text(
-                    text = state.errorMessage,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
+                ContentState.EmptyBeforeSearch -> {
+                    EmptyStateMessage(message = "Search for an artist to get started.")
+                }
 
-            !state.hasSearched -> {
-                EmptyStateMessage(message = "Search for an artist to get started.")
-            }
+                ContentState.EmptyResults -> {
+                    EmptyStateMessage(message = "No artists found for your query.")
+                }
 
-            state.artists.isEmpty() -> {
-                EmptyStateMessage(message = "No artists found for your query.")
-            }
-
-            else -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    items(
-                        items = state.artists,
-                        key = { it.id },
-                    ) { artist ->
-                        ArtistRow(
-                            artist = artist,
-                            onClick = { onArtistSelected(artist) },
-                        )
+                ContentState.Results -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        items(
+                            items = state.artists,
+                            key = { it.id },
+                        ) { artist ->
+                            ArtistRow(
+                                artist = artist,
+                                onClick = { onArtistSelected(artist) },
+                            )
+                        }
                     }
                 }
             }
@@ -126,25 +152,57 @@ private fun ArtistRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp)
             .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onClick)
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AsyncImage(
-            model = artist.thumbnailUrl,
-            contentDescription = artist.title,
-            modifier = Modifier
-                .size(52.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop,
-        )
+        ArtistThumbnail(artist = artist)
 
         Spacer(modifier = Modifier.size(12.dp))
 
         Text(
             text = artist.title,
             style = MaterialTheme.typography.titleMedium,
+        )
+    }
+}
+
+@Composable
+private fun ArtistThumbnail(artist: ArtistSummaryModel) {
+    val url = artist.thumbnailUrl
+
+    if (url.isNullOrBlank()) {
+        ArtistThumbnailPlaceholder(name = artist.title)
+        return
+    }
+
+    SubcomposeAsyncImage(
+        model = url,
+        contentDescription = artist.title,
+        modifier = Modifier
+            .size(52.dp)
+            .clip(CircleShape),
+        contentScale = ContentScale.Crop,
+        loading = { ArtistThumbnailPlaceholder(name = artist.title) },
+        error = { ArtistThumbnailPlaceholder(name = artist.title) },
+    )
+}
+
+@Composable
+private fun ArtistThumbnailPlaceholder(name: String) {
+    Box(
+        modifier = Modifier
+            .size(52.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = name.take(1).uppercase(Locale.getDefault()).ifBlank { "?" },
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
