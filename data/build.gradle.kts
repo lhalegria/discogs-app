@@ -9,6 +9,16 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
+        buildConfigField(
+            "String",
+            "DISCOGS_API_KEY",
+            "\"${providers.gradleProperty("DISCOGS_API_KEY").orElse("").get()}\"",
+        )
+        buildConfigField(
+            "String",
+            "DISCOGS_API_SECRET",
+            "\"${providers.gradleProperty("DISCOGS_API_SECRET").orElse("").get()}\"",
+        )
     }
 
     compileOptions {
