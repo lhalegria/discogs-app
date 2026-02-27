@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -7,4 +9,23 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.ktlint) apply false
+}
+
+subprojects {
+    plugins.withId("io.gitlab.arturbosch.detekt") {
+        extensions.configure(DetektExtension::class.java) {
+            buildUponDefaultConfig = true
+            config.setFrom(rootProject.file("config/detekt/detekt.yml"))
+        }
+    }
+}
+
+tasks.register("installGitHooks") {
+    group = "build setup"
+    description = "Configures Git to use the repository hook scripts."
+    doLast {
+        exec {
+            commandLine("git", "config", "core.hooksPath", ".githooks")
+        }
+    }
 }
