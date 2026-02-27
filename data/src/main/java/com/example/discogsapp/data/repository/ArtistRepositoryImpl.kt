@@ -8,27 +8,36 @@ import com.example.discogsapp.domain.model.ArtistReleasesResultModel
 import com.example.discogsapp.domain.model.ArtistSearchQueryModel
 import com.example.discogsapp.domain.model.ArtistSearchResultModel
 import com.example.discogsapp.domain.repository.ArtistRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class ArtistRepositoryImpl(
     private val discogsService: DiscogsService,
 ) : ArtistRepository {
 
-    override suspend fun searchArtists(query: ArtistSearchQueryModel): ArtistSearchResultModel =
-        discogsService.searchArtists(
-            query = query.query,
-            page = query.page,
-            perPage = query.perPage,
-        ).toDomain()
+    override fun searchArtists(query: ArtistSearchQueryModel): Flow<ArtistSearchResultModel> = flow {
+        emit(
+            discogsService.searchArtists(
+                query = query.query,
+                page = query.page,
+                perPage = query.perPage,
+            ).toDomain(),
+        )
+    }
 
-    override suspend fun getArtistDetails(artistId: Int): ArtistDetailsModel =
-        discogsService.getArtistDetails(artistId).toDomain()
+    override fun getArtistDetails(artistId: Int): Flow<ArtistDetailsModel> = flow {
+        emit(discogsService.getArtistDetails(artistId).toDomain())
+    }
 
-    override suspend fun getArtistReleases(query: ArtistReleasesQueryModel): ArtistReleasesResultModel =
-        discogsService.getArtistReleases(
-            artistId = query.artistId,
-            page = query.page,
-            perPage = query.perPage,
-            sort = query.sort,
-            sortOrder = query.sortOrder,
-        ).toDomain()
+    override fun getArtistReleases(query: ArtistReleasesQueryModel): Flow<ArtistReleasesResultModel> = flow {
+        emit(
+            discogsService.getArtistReleases(
+                artistId = query.artistId,
+                page = query.page,
+                perPage = query.perPage,
+                sort = query.sort,
+                sortOrder = query.sortOrder,
+            ).toDomain(),
+        )
+    }
 }

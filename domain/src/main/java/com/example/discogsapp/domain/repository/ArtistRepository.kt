@@ -5,11 +5,12 @@ import com.example.discogsapp.domain.model.ArtistReleasesQueryModel
 import com.example.discogsapp.domain.model.ArtistReleasesResultModel
 import com.example.discogsapp.domain.model.ArtistSearchQueryModel
 import com.example.discogsapp.domain.model.ArtistSearchResultModel
+import kotlinx.coroutines.flow.Flow
 
 interface ArtistRepository {
-    suspend fun searchArtists(query: ArtistSearchQueryModel): ArtistSearchResultModel
+    fun searchArtists(query: ArtistSearchQueryModel): Flow<ArtistSearchResultModel>
 
-    suspend fun getArtistDetails(artistId: Int): ArtistDetailsModel
+    fun getArtistDetails(artistId: Int): Flow<ArtistDetailsModel>
 
-    suspend fun getArtistReleases(query: ArtistReleasesQueryModel): ArtistReleasesResultModel
+    fun getArtistReleases(query: ArtistReleasesQueryModel): Flow<ArtistReleasesResultModel>
 }
