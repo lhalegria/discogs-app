@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val BASE_URL = "https://api.discogs.com/"
+private const val DEFAULT_USER_AGENT = "DiscogsApp/1.0 +https://github.com/lhalegria/discogs-app"
 
 private val moshi: Moshi = Moshi.Builder()
     .addLast(KotlinJsonAdapterFactory())
@@ -24,10 +25,14 @@ private fun loggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor =
         }
     }
 
-private fun authorizationInterceptor(authorization: String): Interceptor = Interceptor { chain ->
+private fun headersInterceptor(
+    authorization: String,
+    userAgent: String,
+): Interceptor = Interceptor { chain ->
     val request = chain.request()
         .newBuilder()
         .addHeader("Authorization", authorization)
+        .addHeader("User-Agent", userAgent)
         .build()
 
     chain.proceed(request)
@@ -35,13 +40,14 @@ private fun authorizationInterceptor(authorization: String): Interceptor = Inter
 
 fun retrofitAPI(
     authorization: String,
+    userAgent: String = DEFAULT_USER_AGENT,
     isDebug: Boolean = false,
 ): Retrofit =
     Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(
             OkHttpClient.Builder()
-                .addInterceptor(authorizationInterceptor(authorization))
+                .addInterceptor(headersInterceptor(authorization, userAgent))
                 .addInterceptor(loggingInterceptor(isDebug))
                 .build(),
         )
