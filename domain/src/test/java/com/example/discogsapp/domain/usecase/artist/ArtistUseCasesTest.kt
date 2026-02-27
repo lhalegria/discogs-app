@@ -24,15 +24,7 @@ class ArtistUseCasesTest {
     fun `SearchArtistsUseCase delegates to repository`() = runTest {
         val expected = ArtistSearchResultModel(
             pagination = PaginationModel(page = 1, perPage = 30, pages = 1, items = 1),
-            artists = listOf(
-                ArtistSummaryModel(
-                    id = 1,
-                    title = "Justice",
-                    genres = listOf("Electronic"),
-                    thumbnailUrl = "",
-                    type = "artist",
-                ),
-            ),
+            artists = listOf(ArtistSummaryModel(id = 1, title = "Justice", thumbnailUrl = "", type = "artist")),
         )
         val repository = mockk<ArtistRepository>()
         val useCase = SearchArtistsUseCase(repository)
