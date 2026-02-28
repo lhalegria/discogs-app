@@ -117,7 +117,11 @@ private fun AlbumSuccessContent(
     onNavigateBack: () -> Unit,
 ) {
     val listState = rememberLazyListState()
-    val shouldAutoLoadMore = state.hasMorePages && !state.isLoadingMore
+    val hasActiveFilters =
+        state.selectedYear.isNotEmpty() ||
+            state.selectedType.isNotEmpty() ||
+            state.selectedLabel.isNotEmpty()
+    val shouldAutoLoadMore = state.hasMorePages && !state.isLoadingMore && !hasActiveFilters
 
     LaunchedEffect(listState, shouldAutoLoadMore) {
         if (!shouldAutoLoadMore) return@LaunchedEffect

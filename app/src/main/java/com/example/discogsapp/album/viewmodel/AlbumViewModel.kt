@@ -70,7 +70,12 @@ class AlbumViewModel @Inject constructor(
                         }
 
                     val sortedReleases = allReleases.sortedByDescending { it.year }
-                    val years = sortedReleases.map { it.year }.distinct().sorted()
+                    val years =
+                        sortedReleases
+                            .map { it.year }
+                            .filter { it.isNotBlank() }
+                            .distinct()
+                            .sorted()
                     val types = sortedReleases.map { it.type }.distinct().sorted()
                     val labels = sortedReleases.mapNotNull { it.label.ifEmpty { null } }.distinct().sorted()
 
