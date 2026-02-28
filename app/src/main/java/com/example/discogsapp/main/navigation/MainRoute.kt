@@ -19,11 +19,7 @@ fun NavGraphBuilder.mainScreen(navigateToDetail: (DetailRoute) -> Unit) =
         MainScreen(
             onArtistSelected = { artist ->
                 navigateToDetail(
-                    DetailRoute(
-                        artistId = artist.id,
-                        artistName = artist.title,
-                        artistThumbnail = artist.thumbnailUrl,
-                    ),
+                    DetailRoute(artistId = artist.id),
                 )
             },
         )

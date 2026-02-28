@@ -7,4 +7,5 @@ data class ArtistDetailsModel(
     val realName: String = "",
     val urls: List<String> = emptyList(),
     val images: List<ArtistImageModel> = emptyList(),
+    val members: List<ArtistMemberModel> = emptyList(),
 )

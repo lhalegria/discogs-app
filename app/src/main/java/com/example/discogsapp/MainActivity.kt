@@ -25,7 +25,10 @@ class MainActivity : ComponentActivity() {
                     startDestination = MainRoute,
                 ) {
                     mainScreen(navigateToDetail = navController::openDetail)
-                    detailsScreen(navigateToAlbums = navController::openAlbum)
+                    detailsScreen(
+                        navigateToAlbums = navController::openAlbum,
+                        navigateBack = navController::popBackStack,
+                    )
                     albumScreen()
                 }
             }
