@@ -9,4 +9,5 @@ data class ArtistRelease(
     val role: String? = null,
     val type: String? = null,
     @Json(name = "thumb") val thumbnailUrl: String? = null,
+    val label: String? = null,
 )

@@ -65,10 +65,11 @@ class ArtistUseCasesTest {
                             ArtistReleaseModel(
                                 id = 100,
                                 title = "Cross",
-                                year = 2007,
+                                year = "2007",
                                 role = "Main",
                                 type = "release",
                                 thumbnailUrl = "",
+                                label = "Roadrunner",
                             ),
                         ),
                 )
