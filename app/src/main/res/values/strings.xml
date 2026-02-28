@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Discogs App</string>
+    <string name="generic_error">Something went wrong</string>
+
+    <!--Detail Screen-->
+    <string name="loading_artist_details">Loading artist details…</string>
+    <string name="error_loading_artist">Failed to load artist details</string>
+    <string name="retry_button">Retry</string>
+    <string name="back_button">Go Back</string>
+    <string name="about_artist">About</string>
+    <string name="artist_given_name">Given name: %s</string>
+    <string name="artist_websites">Websites</string>
+    <string name="artist_members">Members</string>
+    <string name="artist_member_active">Active</string>
+    <string name="artist_member_inactive">Inactive</string>
+    <string name="view_albums_button">View Albums</string>
 </resources>
