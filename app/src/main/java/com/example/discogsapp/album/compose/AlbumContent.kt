@@ -24,7 +24,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -117,7 +116,11 @@ private fun AlbumSuccessContent(
     onNavigateBack: () -> Unit,
 ) {
     val listState = rememberLazyListState()
-    val shouldAutoLoadMore = state.hasMorePages && !state.isLoadingMore
+    val hasActiveFilters =
+        state.selectedYear.isNotEmpty() ||
+            state.selectedType.isNotEmpty() ||
+            state.selectedLabel.isNotEmpty()
+    val shouldAutoLoadMore = state.hasMorePages && !state.isLoadingMore && !hasActiveFilters
 
     LaunchedEffect(listState, shouldAutoLoadMore) {
         if (!shouldAutoLoadMore) return@LaunchedEffect
@@ -134,80 +137,78 @@ private fun AlbumSuccessContent(
             }
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                title = stringResource(R.string.albums_title),
-                onNavigateBack = onNavigateBack,
-            )
-        },
-        content = { paddingValues ->
-            LazyColumn(
-                state = listState,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-            ) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        TopBar(
+            title = stringResource(R.string.albums_title),
+            onNavigateBack = onNavigateBack,
+        )
+
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+        ) {
+            item {
+                FilterSection(
+                    selectedYear = state.selectedYear,
+                    selectedType = state.selectedType,
+                    selectedLabel = state.selectedLabel,
+                    availableYears = state.availableYears,
+                    availableTypes = state.availableTypes,
+                    availableLabels = state.availableLabels,
+                    onFilterByYear = onFilterByYear,
+                    onFilterByType = onFilterByType,
+                    onFilterByLabel = onFilterByLabel,
+                    onClearFilters = onClearFilters,
+                )
+            }
+
+            item {
+                Text(
+                    text = stringResource(R.string.albums_count, state.releases.size, state.totalAlbum),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+            }
+
+            itemsIndexed(
+                items = state.filteredReleases,
+                key = { index, item -> "${item.id}-$index" },
+            ) { _, release ->
+                AlbumCard(release = release)
+            }
+
+            if (state.isLoadingMore) {
                 item {
-                    FilterSection(
-                        selectedYear = state.selectedYear,
-                        selectedType = state.selectedType,
-                        selectedLabel = state.selectedLabel,
-                        availableYears = state.availableYears,
-                        availableTypes = state.availableTypes,
-                        availableLabels = state.availableLabels,
-                        onFilterByYear = onFilterByYear,
-                        onFilterByType = onFilterByType,
-                        onFilterByLabel = onFilterByLabel,
-                        onClearFilters = onClearFilters,
-                    )
-                }
-
-                item {
-                    Text(
-                        text = stringResource(R.string.albums_count, state.releases.size, state.totalAlbum),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
-                }
-
-                itemsIndexed(
-                    items = state.filteredReleases,
-                    key = { index, item -> "${item.id}-$index" },
-                ) { _, release ->
-                    AlbumCard(release = release)
-                }
-
-                if (state.isLoadingMore) {
-                    item {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                        ) {
-                            CircularProgressIndicator(modifier = Modifier.size(32.dp))
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(R.string.loading_more_albums),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(32.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = stringResource(R.string.loading_more_albums),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
                     }
                 }
-
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
             }
-        },
-        modifier = Modifier.fillMaxSize(),
-    )
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
 }
 
 @Composable
