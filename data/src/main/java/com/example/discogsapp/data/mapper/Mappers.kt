@@ -57,10 +57,11 @@ fun ArtistRelease.toDomain(): ArtistReleaseModel =
     ArtistReleaseModel(
         id = id,
         title = title,
-        year = year ?: 0,
+        year = year?.toString() ?: "",
         role = role.orEmpty(),
         type = type.orEmpty(),
         thumbnailUrl = thumbnailUrl.orEmpty(),
+        label = label.orEmpty(),
     )
 
 fun Pagination.toDomain(): PaginationModel =

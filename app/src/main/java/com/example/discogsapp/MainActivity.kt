@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                         navigateToAlbums = navController::openAlbum,
                         navigateBack = navController::popBackStack,
                     )
-                    albumScreen()
+                    albumScreen(navigateBack = navController::popBackStack)
                 }
             }
         }
