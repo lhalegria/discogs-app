@@ -1,5 +1,6 @@
 package com.example.discogsapp.common.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ fun LoadingState(
         modifier =
             modifier
                 .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
                 .statusBarsPadding()
                 .systemBarsPadding(),
     ) {
@@ -36,6 +38,7 @@ fun LoadingState(
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )
     }

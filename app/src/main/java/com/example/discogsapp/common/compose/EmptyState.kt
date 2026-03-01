@@ -21,6 +21,7 @@ fun EmptyState(message: String) {
         Text(
             text = message,
             style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )
     }

@@ -77,6 +77,7 @@ fun ReleaseContent(
         modifier =
             Modifier
                 .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
                 .systemBarsPadding(),
     ) {
         TopBar(

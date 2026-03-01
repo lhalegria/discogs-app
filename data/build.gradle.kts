@@ -30,8 +30,8 @@ android {
             libs.versions.minSdk
                 .get()
                 .toInt()
-        buildConfigField("String", "DISCOGS_API_KEY", "\"${prop("DISCOGS_API_KEY")}\"")
-        buildConfigField("String", "DISCOGS_API_SECRET", "\"${prop("DISCOGS_API_SECRET")}\"")
+
+        buildConfigField("String", "DISCOGS_TOKEN", "\"${prop("DISCOGS_TOKEN")}\"")
     }
 
     buildFeatures {

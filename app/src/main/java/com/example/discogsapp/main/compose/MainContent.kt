@@ -69,12 +69,18 @@ fun MainContent(
         modifier =
             Modifier
                 .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
                 .systemBarsPadding(),
     ) {
         OutlinedTextField(
             value = state.query,
             onValueChange = onQueryChanged,
-            label = { Text(text = stringResource(R.string.search_artist)) },
+            label = {
+                Text(
+                    text = stringResource(R.string.search_artist),
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+            },
             singleLine = true,
             leadingIcon = {
                 Icon(
@@ -184,6 +190,7 @@ private fun ArtistRow(
         Text(
             text = artist.title,
             style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
