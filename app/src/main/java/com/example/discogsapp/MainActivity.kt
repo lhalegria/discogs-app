@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.navigation.compose.rememberNavController
-import com.example.discogsapp.album.navigation.albumScreen
-import com.example.discogsapp.album.navigation.openAlbum
+import com.example.discogsapp.album.navigation.openRelease
+import com.example.discogsapp.album.navigation.releaseScreen
 import com.example.discogsapp.detail.navigation.detailsScreen
 import com.example.discogsapp.detail.navigation.openDetail
 import com.example.discogsapp.main.navigation.MainRoute
@@ -26,10 +26,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     mainScreen(navigateToDetail = navController::openDetail)
                     detailsScreen(
-                        navigateToAlbums = navController::openAlbum,
+                        navigateToReleases = navController::openRelease,
                         navigateBack = navController::popBackStack,
                     )
-                    albumScreen(navigateBack = navController::popBackStack)
+                    releaseScreen(navigateBack = navController::popBackStack)
                 }
             }
         }

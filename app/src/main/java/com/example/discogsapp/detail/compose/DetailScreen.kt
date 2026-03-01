@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.discogsapp.album.navigation.AlbumRoute
+import com.example.discogsapp.album.navigation.ReleaseRoute
 import com.example.discogsapp.detail.viewmodel.DetailEffect
 import com.example.discogsapp.detail.viewmodel.DetailViewModel
 import com.example.discogsapp.viewmodel.flow.collectAsEffect
@@ -15,7 +15,7 @@ import com.example.discogsapp.viewmodel.flow.collectAsEffect
 @Composable
 fun DetailScreen(
     artistId: Int,
-    navigateToAlbum: (AlbumRoute) -> Unit,
+    navigateToRelease: (ReleaseRoute) -> Unit,
     navigateBack: () -> Unit,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
@@ -23,7 +23,7 @@ fun DetailScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     viewModel.effect.collectAsEffect {
         when (it) {
-            is DetailEffect.NavigateToAlbum -> navigateToAlbum(it.albumRoute)
+            is DetailEffect.NavigateToRelease -> navigateToRelease(it.albumRoute)
             is DetailEffect.OpenUrl -> uriHandler.openUri(it.url)
         }
     }
@@ -36,7 +36,7 @@ fun DetailScreen(
 
     DetailContent(
         state = state,
-        onClickAlbum = viewModel::navigateToAlbum,
+        onClickRelease = viewModel::navigateToRelease,
         onRetry = viewModel::retry,
         onClickLink = viewModel::openUrl,
         onNavigateBack = navigateBack,

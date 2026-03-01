@@ -8,5 +8,5 @@ data class ArtistDetailsResponse(
     val profile: String? = null,
     @Json(name = "realname") val realName: String? = null,
     val urls: List<String>? = null,
-    val images: List<ArtistImage>? = null,
+    val images: List<ArtistImageResponse>? = null,
 )

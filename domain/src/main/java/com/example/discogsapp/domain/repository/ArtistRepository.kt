@@ -1,16 +1,16 @@
 package com.example.discogsapp.domain.repository
 
-import com.example.discogsapp.domain.model.ArtistDetailsModel
-import com.example.discogsapp.domain.model.ArtistReleasesQueryModel
-import com.example.discogsapp.domain.model.ArtistReleasesResultModel
-import com.example.discogsapp.domain.model.ArtistSearchQueryModel
-import com.example.discogsapp.domain.model.ArtistSearchResultModel
+import com.example.discogsapp.domain.model.ArtistDetailModel
+import com.example.discogsapp.domain.model.ArtistQueryModel
+import com.example.discogsapp.domain.model.ArtistReleaseQueryModel
+import com.example.discogsapp.domain.model.ArtistReleaseSearchModel
+import com.example.discogsapp.domain.model.ArtistSearchModel
 import kotlinx.coroutines.flow.Flow
 
 interface ArtistRepository {
-    fun searchArtists(query: ArtistSearchQueryModel): Flow<ArtistSearchResultModel>
+    fun searchArtists(query: ArtistQueryModel): Flow<ArtistSearchModel>
 
-    fun getArtistDetails(artistId: Int): Flow<ArtistDetailsModel>
+    fun getArtistDetails(artistId: Int): Flow<ArtistDetailModel>
 
-    fun getArtistReleases(query: ArtistReleasesQueryModel): Flow<ArtistReleasesResultModel>
+    fun searchArtistReleases(query: ArtistReleaseQueryModel): Flow<ArtistReleaseSearchModel>
 }

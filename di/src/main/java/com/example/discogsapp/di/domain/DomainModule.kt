@@ -1,9 +1,9 @@
 package com.example.discogsapp.di.domain
 
 import com.example.discogsapp.domain.repository.ArtistRepository
-import com.example.discogsapp.domain.usecase.artist.GetArtistDetailsUseCase
-import com.example.discogsapp.domain.usecase.artist.GetArtistReleasesUseCase
-import com.example.discogsapp.domain.usecase.artist.SearchArtistsUseCase
+import com.example.discogsapp.domain.usecase.artist.GetArtistDetailUseCase
+import com.example.discogsapp.domain.usecase.artist.SearchArtistUseCase
+import com.example.discogsapp.domain.usecase.release.SearchArtistReleaseUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,11 +13,12 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object DomainModule {
     @Provides
-    fun provideSearchArtistsUseCase(artistRepository: ArtistRepository) = SearchArtistsUseCase(artistRepository)
+    fun provideSearchArtistsUseCase(artistRepository: ArtistRepository) = SearchArtistUseCase(artistRepository)
 
     @Provides
-    fun provideGetArtistDetailsUseCase(artistRepository: ArtistRepository) = GetArtistDetailsUseCase(artistRepository)
+    fun provideGetArtistDetailsUseCase(artistRepository: ArtistRepository) = GetArtistDetailUseCase(artistRepository)
 
     @Provides
-    fun provideGetArtistReleasesUseCase(artistRepository: ArtistRepository) = GetArtistReleasesUseCase(artistRepository)
+    fun provideSearchArtistReleasesUseCase(artistRepository: ArtistRepository) =
+        SearchArtistReleaseUseCase(artistRepository)
 }

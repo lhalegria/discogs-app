@@ -18,7 +18,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -28,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -37,6 +39,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
+import com.example.discogsapp.common.compose.EmptyState
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
 import kotlinx.coroutines.flow.flowOf
@@ -69,7 +72,7 @@ fun MainContent(
             onValueChange = onQueryChanged,
             label = { Text(text = "Search artist") },
             singleLine = true,
-            leadingIcon = { Text(text = "🔎") },
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSearchSubmitted() }),
             modifier =
@@ -102,11 +105,11 @@ fun MainContent(
                 }
 
                 ContentState.EmptyBeforeSearch -> {
-                    EmptyStateMessage(message = "Search for an artist to get started.")
+                    EmptyState(message = "Search for an artist to get started.")
                 }
 
                 ContentState.EmptyResults -> {
-                    EmptyStateMessage(message = "No artists found for your query.")
+                    EmptyState(message = "No artists found for your query.")
                 }
 
                 ContentState.Results -> {
@@ -164,21 +167,6 @@ private fun MainContentError(error: LoadState.Error?) {
         color = MaterialTheme.colorScheme.error,
         modifier = Modifier.padding(horizontal = 16.dp),
     )
-}
-
-@Composable
-private fun EmptyStateMessage(message: String) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Text(
-            text = message,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-        )
-    }
 }
 
 @Composable

@@ -1,8 +1,8 @@
 package com.example.discogsapp.detail.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.discogsapp.album.navigation.AlbumRoute
-import com.example.discogsapp.domain.usecase.artist.GetArtistDetailsUseCase
+import com.example.discogsapp.album.navigation.ReleaseRoute
+import com.example.discogsapp.domain.usecase.artist.GetArtistDetailUseCase
 import com.example.discogsapp.viewmodel.flow.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getArtistDetailsUseCase: GetArtistDetailsUseCase,
+    private val getArtistDetailUseCase: GetArtistDetailUseCase,
     private val dispatcher: CoroutineDispatcher,
 ) : ViewModel<DetailState, DetailEffect>(DetailState()) {
     fun fetchArtistDetails(artistId: Int) {
         viewModelScope.launch {
-            getArtistDetailsUseCase(artistId)
+            getArtistDetailUseCase(artistId)
                 .onStart {
                     setState {
                         it.copy(
@@ -48,8 +48,8 @@ class DetailViewModel @Inject constructor(
         fetchArtistDetails(state.value.artistId)
     }
 
-    fun navigateToAlbum(albumId: Int) {
-        sendEffect(DetailEffect.NavigateToAlbum(AlbumRoute(albumId)))
+    fun navigateToRelease(artist: String) {
+        sendEffect(DetailEffect.NavigateToRelease(ReleaseRoute(artist)))
     }
 
     fun openUrl(url: String) {

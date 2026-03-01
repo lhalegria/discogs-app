@@ -31,7 +31,7 @@ import com.example.discogsapp.common.compose.ErrorState
 import com.example.discogsapp.common.compose.LoadingState
 import com.example.discogsapp.common.compose.TopBar
 import com.example.discogsapp.detail.viewmodel.DetailState
-import com.example.discogsapp.domain.model.ArtistDetailsModel
+import com.example.discogsapp.domain.model.ArtistDetailModel
 import com.example.discogsapp.domain.model.ArtistImageModel
 import com.example.discogsapp.domain.model.ArtistMemberModel
 
@@ -44,7 +44,7 @@ private enum class DetailContentState {
 @Composable
 fun DetailContent(
     state: DetailState,
-    onClickAlbum: (artistId: Int) -> Unit,
+    onClickRelease: (artist: String) -> Unit,
     onRetry: () -> Unit,
     onClickLink: (url: String) -> Unit,
     onNavigateBack: () -> Unit,
@@ -79,7 +79,7 @@ fun DetailContent(
                 state.artistInfo?.let { artist ->
                     DetailSuccessContent(
                         artist = artist,
-                        onClickAlbum = onClickAlbum,
+                        onClickRelease = onClickRelease,
                         onClickLink = onClickLink,
                         onNavigateBack = onNavigateBack,
                     )
@@ -92,8 +92,8 @@ fun DetailContent(
 @Suppress("LongMethod")
 @Composable
 private fun DetailSuccessContent(
-    artist: ArtistDetailsModel,
-    onClickAlbum: (Int) -> Unit,
+    artist: ArtistDetailModel,
+    onClickRelease: (String) -> Unit,
     onClickLink: (String) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -207,7 +207,7 @@ private fun DetailSuccessContent(
                         .padding(16.dp),
             ) {
                 Button(
-                    onClick = { onClickAlbum(artist.id) },
+                    onClick = { onClickRelease(artist.name) },
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(text = stringResource(R.string.view_albums_button))
@@ -226,7 +226,7 @@ private fun DetailContentSuccessPreview() {
             DetailState(
                 artistId = 108713,
                 artistInfo =
-                    ArtistDetailsModel(
+                    ArtistDetailModel(
                         id = 108713,
                         name = "Nickelback",
                         profile =
@@ -267,7 +267,7 @@ private fun DetailContentSuccessPreview() {
                             ),
                     ),
             ),
-        onClickAlbum = {},
+        onClickRelease = {},
         onRetry = {},
         onClickLink = {},
         onNavigateBack = {},
@@ -279,7 +279,7 @@ private fun DetailContentSuccessPreview() {
 private fun DetailContentLoadingPreview() {
     DetailContent(
         state = DetailState(),
-        onClickAlbum = {},
+        onClickRelease = {},
         onRetry = {},
         onClickLink = {},
         onNavigateBack = {},
@@ -296,7 +296,7 @@ private fun DetailContentErrorPreview() {
                 artistInfo = null,
                 hasError = true,
             ),
-        onClickAlbum = {},
+        onClickRelease = {},
         onRetry = {},
         onClickLink = {},
         onNavigateBack = {},

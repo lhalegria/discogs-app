@@ -4,24 +4,24 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.discogsapp.album.compose.AlbumScreen
+import com.example.discogsapp.album.compose.ReleaseScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AlbumRoute(
-    val artistId: Int,
+data class ReleaseRoute(
+    val artist: String,
 )
 
-fun NavController.openAlbum(args: AlbumRoute) {
+fun NavController.openRelease(args: ReleaseRoute) {
     navigate(route = args)
 }
 
-fun NavGraphBuilder.albumScreen(
+fun NavGraphBuilder.releaseScreen(
     navigateBack: () -> Unit,
-) = composable<AlbumRoute> {
-    val args = it.toRoute<AlbumRoute>()
-    AlbumScreen(
-        artistId = args.artistId,
+) = composable<ReleaseRoute> {
+    val args = it.toRoute<ReleaseRoute>()
+    ReleaseScreen(
+        artist = args.artist,
         navigateBack = navigateBack,
     )
 }

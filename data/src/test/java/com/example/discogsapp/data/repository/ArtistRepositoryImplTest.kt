@@ -1,15 +1,15 @@
 package com.example.discogsapp.data.repository
 
 import com.example.discogsapp.data.response.ArtistDetailsResponse
-import com.example.discogsapp.data.response.ArtistImage
-import com.example.discogsapp.data.response.ArtistRelease
-import com.example.discogsapp.data.response.ArtistReleasesResponse
+import com.example.discogsapp.data.response.ArtistImageResponse
+import com.example.discogsapp.data.response.ArtistReleaseSearchDataResponse
+import com.example.discogsapp.data.response.ArtistReleaseSearchResponse
+import com.example.discogsapp.data.response.ArtistSearchDataResponse
 import com.example.discogsapp.data.response.ArtistSearchResponse
-import com.example.discogsapp.data.response.ArtistSearchResult
-import com.example.discogsapp.data.response.Pagination
+import com.example.discogsapp.data.response.PaginationResponse
 import com.example.discogsapp.data.service.DiscogsService
-import com.example.discogsapp.domain.model.ArtistReleasesQueryModel
-import com.example.discogsapp.domain.model.ArtistSearchQueryModel
+import com.example.discogsapp.domain.model.ArtistQueryModel
+import com.example.discogsapp.domain.model.ArtistReleaseQueryModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -31,10 +31,10 @@ class ArtistRepositoryImplTest {
                 )
             } returns
                 ArtistSearchResponse(
-                    pagination = Pagination(page = 2, perPage = 15, pages = 4, items = 60),
+                    pagination = PaginationResponse(page = 2, perPage = 15, pages = 4, items = 60),
                     results =
                         listOf(
-                            ArtistSearchResult(
+                            ArtistSearchDataResponse(
                                 id = 10,
                                 title = "Daft Punk",
                                 thumbnailUrl = "https://img",
@@ -47,7 +47,7 @@ class ArtistRepositoryImplTest {
             val result =
                 repository
                     .searchArtists(
-                        ArtistSearchQueryModel(query = "daft", page = 2, perPage = 15),
+                        ArtistQueryModel(query = "daft", page = 2, perPage = 15),
                     ).first()
 
             coVerify(exactly = 1) {
@@ -75,7 +75,15 @@ class ArtistRepositoryImplTest {
                     profile = null,
                     realName = null,
                     urls = null,
-                    images = listOf(ArtistImage(uri = "https://full", smallUri = null, width = null, height = null)),
+                    images =
+                        listOf(
+                            ArtistImageResponse(
+                                uri = "https://full",
+                                smallUri = null,
+                                width = null,
+                                height = null,
+                            ),
+                        ),
                 )
             val repository = ArtistRepositoryImpl(service)
 
@@ -88,28 +96,27 @@ class ArtistRepositoryImplTest {
         }
 
     @Test
-    fun `getArtistReleases maps service response and forwards query params`() =
+    fun `searchArtistReleases maps service response and forwards query params`() =
         runTest {
             val service = mockk<DiscogsService>()
             coEvery {
-                service.getArtistReleases(
-                    artistId = 30,
-                    page = 3,
-                    perPage = 25,
-                    sort = "year",
-                    sortOrder = "asc",
+                service.searchArtistReleases(
+                    artist = "Daft Punk",
+                    page = 2,
+                    perPage = 15,
                 )
             } returns
-                ArtistReleasesResponse(
-                    pagination = Pagination(page = 3, perPage = 25, pages = 7, items = 150),
-                    releases =
+                ArtistReleaseSearchResponse(
+                    pagination = PaginationResponse(page = 2, perPage = 15, pages = 4, items = 60),
+                    results =
                         listOf(
-                            ArtistRelease(
+                            ArtistReleaseSearchDataResponse(
                                 id = 99,
                                 title = "Homework",
-                                year = null,
+                                year = "2025",
                                 role = null,
-                                type = null,
+                                type = "release",
+                                genre = listOf("Electronic"),
                                 thumbnailUrl = null,
                             ),
                         ),
@@ -118,26 +125,19 @@ class ArtistRepositoryImplTest {
 
             val result =
                 repository
-                    .getArtistReleases(
-                        ArtistReleasesQueryModel(
-                            artistId = 30,
-                            page = 3,
-                            perPage = 25,
-                            sort = "year",
-                            sortOrder = "asc",
-                        ),
+                    .searchArtistReleases(
+                        ArtistReleaseQueryModel(artist = "Daft Punk", page = 2, perPage = 15),
                     ).first()
 
             coVerify(exactly = 1) {
-                service.getArtistReleases(
-                    artistId = 30,
-                    page = 3,
-                    perPage = 25,
-                    sort = "year",
-                    sortOrder = "asc",
+                service.searchArtistReleases(
+                    artist = "Daft Punk",
+                    page = 2,
+                    perPage = 15,
                 )
             }
-            assertEquals("", result.releases.first().role)
-            assertEquals(0, result.releases.first().year)
+            assertEquals(2, result.pagination.page)
+            assertEquals(1, result.releases.size)
+            assertEquals("Homework", result.releases.first().title)
         }
 }

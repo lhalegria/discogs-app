@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Discogs App</string>
     <string name="generic_error">Something went wrong</string>
+    <string name="no_results">No results found.</string>
 
     <!--Detail Screen-->
     <string name="loading_artist_details">Loading artist details…</string>
@@ -16,17 +17,14 @@
     <string name="artist_member_inactive">Inactive</string>
     <string name="view_albums_button">View Albums</string>
 
-    <!--Album Screen-->
-    <string name="loading_albums">Loading albums…</string>
-    <string name="error_loading_albums">Failed to load albums</string>
-    <string name="albums_title">Albums</string>
+    <!--Release Screen-->
+    <string name="loading_releases">Loading releases…</string>
+    <string name="error_loading_releases">Failed to load albums</string>
+    <string name="releases_title">Releases</string>
     <string name="filters_label">Filters</string>
     <string name="filter_by_year">Year</string>
-    <string name="filter_by_type">Type</string>
+    <string name="filter_by_genre">Genre</string>
     <string name="filter_by_label">Label</string>
-    <string name="filter_all">All</string>
-    <string name="clear_filters">Clear Filters</string>
-    <string name="albums_count">Showing %1$d of %2$d albums</string>
     <string name="no_image">No image</string>
-    <string name="loading_more_albums">Loading more albums…</string>
+    <string name="search_release">Search release</string>
 </resources>

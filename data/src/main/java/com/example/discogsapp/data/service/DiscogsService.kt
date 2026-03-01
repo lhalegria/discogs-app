@@ -1,7 +1,7 @@
 package com.example.discogsapp.data.service
 
 import com.example.discogsapp.data.response.ArtistDetailsResponse
-import com.example.discogsapp.data.response.ArtistReleasesResponse
+import com.example.discogsapp.data.response.ArtistReleaseSearchResponse
 import com.example.discogsapp.data.response.ArtistSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,12 +21,15 @@ interface DiscogsService {
         @Path("artistId") artistId: Int,
     ): ArtistDetailsResponse
 
-    @GET("artists/{artistId}/releases")
-    suspend fun getArtistReleases(
-        @Path("artistId") artistId: Int,
+    @GET("database/search")
+    suspend fun searchArtistReleases(
+        @Query("type") type: String = "release",
+        @Query("artist") artist: String,
+        @Query("year") year: String? = null,
+        @Query("genre") genre: String? = null,
+        @Query("label") label: String? = null,
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 30,
-        @Query("sort") sort: String? = null,
-        @Query("sort_order") sortOrder: String? = null,
-    ): ArtistReleasesResponse
+        @Query("sort") sort: String = "year",
+    ): ArtistReleaseSearchResponse
 }
