@@ -1,4 +1,4 @@
-package com.example.discogsapp.album.viewmodel
+package com.example.discogsapp.release.viewmodel
 
 import com.example.discogsapp.viewmodel.flow.UIState
 

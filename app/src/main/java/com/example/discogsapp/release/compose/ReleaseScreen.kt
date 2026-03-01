@@ -1,11 +1,11 @@
-package com.example.discogsapp.album.compose
+package com.example.discogsapp.release.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.discogsapp.album.viewmodel.ReleaseViewModel
+import com.example.discogsapp.release.viewmodel.ReleaseViewModel
 
 @Composable
 fun ReleaseScreen(

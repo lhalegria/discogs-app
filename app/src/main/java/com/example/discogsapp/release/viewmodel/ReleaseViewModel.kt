@@ -1,13 +1,13 @@
-package com.example.discogsapp.album.viewmodel
+package com.example.discogsapp.release.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.discogsapp.album.viewmodel.paging.ArtistReleaseSearchPagingSource
 import com.example.discogsapp.domain.model.ArtistReleaseModel
 import com.example.discogsapp.domain.usecase.release.SearchArtistReleaseUseCase
+import com.example.discogsapp.release.viewmodel.paging.ArtistReleaseSearchPagingSource
 import com.example.discogsapp.viewmodel.flow.StateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

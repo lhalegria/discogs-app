@@ -1,4 +1,4 @@
-package com.example.discogsapp.album.viewmodel.paging
+package com.example.discogsapp.release.viewmodel.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

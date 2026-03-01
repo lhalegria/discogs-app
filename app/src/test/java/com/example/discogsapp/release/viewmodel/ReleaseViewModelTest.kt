@@ -1,4 +1,4 @@
-package com.example.discogsapp.album.viewmodel
+package com.example.discogsapp.release.viewmodel
 
 import app.cash.turbine.test
 import com.example.discogsapp.domain.usecase.release.SearchArtistReleaseUseCase
