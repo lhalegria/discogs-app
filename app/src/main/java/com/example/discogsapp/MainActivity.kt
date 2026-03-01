@@ -3,13 +3,6 @@ package com.example.discogsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.discogsapp.detail.navigation.detailsScreen
 import com.example.discogsapp.detail.navigation.openDetail
@@ -26,7 +19,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DiscogsTheme {
-                ConfigureStatusBar()
                 val navController = rememberNavController()
                 DiscogsNavHost(
                     navController = navController,
@@ -40,17 +32,6 @@ class MainActivity : ComponentActivity() {
                     releaseScreen(navigateBack = navController::popBackStack)
                 }
             }
-        }
-    }
-
-    @Composable
-    private fun ConfigureStatusBar() {
-        val isDarkTheme = isSystemInDarkTheme()
-        val view = LocalView.current
-
-        SideEffect {
-            window.statusBarColor = if (isDarkTheme) Color.White.toArgb() else Color.Black.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = isDarkTheme
         }
     }
 }
