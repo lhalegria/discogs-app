@@ -11,14 +11,13 @@ Android application that interacts with the Discogs API to search for artists, d
 ### 2) Configure API credentials
 Create (or update) a `local.properties` file in the project root with:
 
-```properties
-DISCOGS_API_KEY=your_discogs_key
-DISCOGS_API_SECRET=your_discogs_secret
+```property
+DISCOGS_TOKEN=your_discogs_token
 ```
 
-The `data` module reads these values and exposes them as `BuildConfig` fields (`DISCOGS_API_KEY` and `DISCOGS_API_SECRET`) during build time.
+The `data` module reads this value and exposes it as a `BuildConfig` field (`DISCOGS_TOKEN`) during build time.
 
-> You can also provide these values as Gradle properties (for CI), but `local.properties` is the recommended local setup.
+> You can also provide this value as a Gradle property (for CI), but `local.properties` is the recommended local setup.
 
 ### 3) Build and run
 - Sync the project in Android Studio

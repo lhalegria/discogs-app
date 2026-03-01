@@ -13,16 +13,8 @@ private const val BASE_URL = "https://api.discogs.com/"
 private const val DEFAULT_USER_AGENT = "DiscogsApp/1.0 +https://github.com/lhalegria/discogs-app"
 private val DEFAULT_AUTHORIZATION =
     when {
-        BuildConfig.DISCOGS_API_KEY.isNotBlank() && BuildConfig.DISCOGS_API_SECRET.isNotBlank() -> {
-            "Discogs key=%s, secret=%s".format(
-                BuildConfig.DISCOGS_API_KEY,
-                BuildConfig.DISCOGS_API_SECRET,
-            )
-        }
-
-        else -> {
-            null
-        }
+        BuildConfig.DISCOGS_TOKEN.isNotBlank() -> "Discogs token=%s".format(BuildConfig.DISCOGS_TOKEN)
+        else -> null
     }
 
 private val moshi: Moshi =
