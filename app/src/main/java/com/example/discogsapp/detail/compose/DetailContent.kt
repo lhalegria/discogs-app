@@ -210,7 +210,7 @@ private fun DetailSuccessContent(
                     onClick = { onClickRelease(artist.name) },
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(text = stringResource(R.string.view_albums_button))
+                    Text(text = stringResource(R.string.view_releases_button))
                 }
             }
         },

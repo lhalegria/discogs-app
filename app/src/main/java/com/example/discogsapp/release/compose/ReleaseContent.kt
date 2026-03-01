@@ -1,4 +1,4 @@
-package com.example.discogsapp.album.compose
+package com.example.discogsapp.release.compose
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
@@ -45,12 +45,12 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.example.discogsapp.R
-import com.example.discogsapp.album.viewmodel.ReleaseState
 import com.example.discogsapp.common.compose.EmptyState
 import com.example.discogsapp.common.compose.ErrorState
 import com.example.discogsapp.common.compose.LoadingState
 import com.example.discogsapp.common.compose.TopBar
 import com.example.discogsapp.domain.model.ArtistReleaseModel
+import com.example.discogsapp.release.viewmodel.ReleaseState
 import kotlinx.coroutines.flow.flowOf
 
 private const val YEAR_SIZE = 4

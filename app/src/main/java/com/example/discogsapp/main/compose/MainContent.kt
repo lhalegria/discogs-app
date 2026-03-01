@@ -30,8 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -40,8 +40,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
-import com.example.discogsapp.common.compose.EmptyState
 import com.example.discogsapp.R
+import com.example.discogsapp.common.compose.EmptyState
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
 import kotlinx.coroutines.flow.flowOf

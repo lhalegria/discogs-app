@@ -1,10 +1,10 @@
-package com.example.discogsapp.album.navigation
+package com.example.discogsapp.release.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.discogsapp.album.compose.ReleaseScreen
+import com.example.discogsapp.release.compose.ReleaseScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

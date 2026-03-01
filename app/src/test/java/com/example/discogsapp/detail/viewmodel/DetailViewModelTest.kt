@@ -1,13 +1,14 @@
 package com.example.discogsapp.detail.viewmodel
 
 import app.cash.turbine.test
-import com.example.discogsapp.album.navigation.ReleaseRoute
 import com.example.discogsapp.domain.model.ArtistDetailModel
 import com.example.discogsapp.domain.usecase.artist.GetArtistDetailUseCase
+import com.example.discogsapp.release.navigation.ReleaseRoute
 import com.example.discogsapp.testing.MainDispatcherRule
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -86,6 +87,7 @@ class DetailViewModelTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `navigateToRelease emits navigation effect`() =
         runTest {
@@ -102,6 +104,7 @@ class DetailViewModelTest {
             }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `openUrl emits open url effect`() =
         runTest {

@@ -1,8 +1,8 @@
 package com.example.discogsapp.detail.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.discogsapp.album.navigation.ReleaseRoute
 import com.example.discogsapp.domain.usecase.artist.GetArtistDetailUseCase
+import com.example.discogsapp.release.navigation.ReleaseRoute
 import com.example.discogsapp.viewmodel.flow.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

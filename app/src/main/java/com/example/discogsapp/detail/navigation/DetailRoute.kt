@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.discogsapp.album.navigation.ReleaseRoute
 import com.example.discogsapp.detail.compose.DetailScreen
+import com.example.discogsapp.release.navigation.ReleaseRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
