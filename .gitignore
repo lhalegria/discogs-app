@@ -32,3 +32,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Gradle daemon JVM properties file (auto-generated, local to machine)
+gradle/gradle-daemon-jvm.properties

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Discogs App</string>
+    <string name="generic_error">Something went wrong</string>
+    <string name="no_results">No results found.</string>
+
+    <!--Main Screen-->
+    <string name="loading_artists">Loading artists…</string>
+    <string name="search_artist">Search artist</string>
+    <string name="search_artist_icon_description">Search</string>
+    <string name="search_artist_empty_before_search">Search for an artist to get started.</string>
+    <string name="search_artist_empty_results">No artists found for your query.</string>
+    <string name="error_loading_artists">Failed to fetch artists. Please try again.</string>
+
+    <!--Detail Screen-->
+    <string name="loading_artist_details">Loading artist details…</string>
+    <string name="error_loading_artist">Failed to load artist details</string>
+    <string name="retry_button">Retry</string>
+    <string name="back_button">Go Back</string>
+    <string name="about_artist">About</string>
+    <string name="artist_given_name">Given name: %s</string>
+    <string name="artist_websites">Websites</string>
+    <string name="artist_members">Members</string>
+    <string name="artist_member_active">Active</string>
+    <string name="artist_member_inactive">Inactive</string>
+    <string name="view_releases_button">View releases</string>
+
+    <!--Release Screen-->
+    <string name="loading_releases">Loading releases…</string>
+    <string name="error_loading_releases">Failed to load releases</string>
+    <string name="releases_title">Releases</string>
+    <string name="filters_label">Filters</string>
+    <string name="filter_by_year">Year</string>
+    <string name="filter_by_genre">Genre</string>
+    <string name="filter_by_label">Label</string>
+    <string name="filter_by_year_option">By year</string>
+    <string name="filter_by_genre_option">By genre</string>
+    <string name="filter_by_label_option">By label</string>
+    <string name="no_image">No image</string>
+    <string name="search_release">Search release</string>
+
+    <string name="expand_section">Expand</string>
+    <string name="collapse_section">Collapse</string>
+</resources>
