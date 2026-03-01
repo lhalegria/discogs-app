@@ -214,19 +214,19 @@ private fun Search(
         FilterChip(
             selected = state.isYearFilter,
             onClick = onYearFilterSelected,
-            label = { Text(text = "By year") },
+            label = { Text(text = stringResource(R.string.filter_by_year_option)) },
         )
 
         FilterChip(
             selected = state.isGenreFilter,
             onClick = onGenreFilterSelected,
-            label = { Text(text = "By genre") },
+            label = { Text(text = stringResource(R.string.filter_by_genre_option)) },
         )
 
         FilterChip(
             selected = state.isLabelFilter,
             onClick = onLabelFilterSelected,
-            label = { Text(text = "By label") },
+            label = { Text(text = stringResource(R.string.filter_by_label_option)) },
         )
     }
 }

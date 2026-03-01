@@ -4,6 +4,13 @@
     <string name="generic_error">Something went wrong</string>
     <string name="no_results">No results found.</string>
 
+    <!--Main Screen-->
+    <string name="search_artist">Search artist</string>
+    <string name="search_artist_icon_description">Search</string>
+    <string name="search_artist_empty_before_search">Search for an artist to get started.</string>
+    <string name="search_artist_empty_results">No artists found for your query.</string>
+    <string name="error_loading_artists">Failed to fetch artists. Please try again.</string>
+
     <!--Detail Screen-->
     <string name="loading_artist_details">Loading artist details…</string>
     <string name="error_loading_artist">Failed to load artist details</string>
@@ -25,6 +32,12 @@
     <string name="filter_by_year">Year</string>
     <string name="filter_by_genre">Genre</string>
     <string name="filter_by_label">Label</string>
+    <string name="filter_by_year_option">By year</string>
+    <string name="filter_by_genre_option">By genre</string>
+    <string name="filter_by_label_option">By label</string>
     <string name="no_image">No image</string>
     <string name="search_release">Search release</string>
+
+    <string name="expand_section">Expand</string>
+    <string name="collapse_section">Collapse</string>
 </resources>
