@@ -1,6 +1,6 @@
 package com.example.discogsapp.domain.model
 
-data class ArtistDetailsModel(
+data class ArtistDetailModel(
     val id: Int,
     val name: String,
     val profile: String = "",

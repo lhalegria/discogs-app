@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.discogsapp.album.navigation.AlbumRoute
+import com.example.discogsapp.album.navigation.ReleaseRoute
 import com.example.discogsapp.detail.compose.DetailScreen
 import kotlinx.serialization.Serializable
 
@@ -18,13 +18,13 @@ fun NavController.openDetail(args: DetailRoute) {
 }
 
 fun NavGraphBuilder.detailsScreen(
-    navigateToAlbums: (AlbumRoute) -> Unit,
+    navigateToReleases: (ReleaseRoute) -> Unit,
     navigateBack: () -> Unit,
 ) = composable<DetailRoute> {
     val args = it.toRoute<DetailRoute>()
     DetailScreen(
         artistId = args.artistId,
-        navigateToAlbum = navigateToAlbums,
+        navigateToRelease = navigateToReleases,
         navigateBack = navigateBack,
     )
 }

@@ -6,7 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.discogsapp.domain.model.ArtistSummaryModel
-import com.example.discogsapp.domain.usecase.artist.SearchArtistsUseCase
+import com.example.discogsapp.domain.usecase.artist.SearchArtistUseCase
 import com.example.discogsapp.main.viewmodel.paging.ArtistSearchPagingSource
 import com.example.discogsapp.viewmodel.flow.StateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val searchArtistsUseCase: SearchArtistsUseCase,
+    private val searchArtistUseCase: SearchArtistUseCase,
 ) : StateViewModel<MainState>(MainState()) {
     private val searchQuery = MutableStateFlow<String?>(null)
 
@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
                         ArtistSearchPagingSource(
                             query = query,
                             pageSize = PAGE_SIZE,
-                            searchArtistsUseCase = searchArtistsUseCase,
+                            searchArtistUseCase = searchArtistUseCase,
                         )
                     }.flow
                 }

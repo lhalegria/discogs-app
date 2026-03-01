@@ -1,6 +1,6 @@
 package com.example.discogsapp.domain.model
 
-data class ArtistSearchResultModel(
+data class ArtistReleaseSearchModel(
     val pagination: PaginationModel,
-    val artists: List<ArtistSummaryModel>,
+    val releases: List<ArtistReleaseModel>,
 )

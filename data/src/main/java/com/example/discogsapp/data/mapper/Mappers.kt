@@ -1,27 +1,27 @@
 package com.example.discogsapp.data.mapper
 
 import com.example.discogsapp.data.response.ArtistDetailsResponse
-import com.example.discogsapp.data.response.ArtistImage
-import com.example.discogsapp.data.response.ArtistRelease
-import com.example.discogsapp.data.response.ArtistReleasesResponse
+import com.example.discogsapp.data.response.ArtistImageResponse
+import com.example.discogsapp.data.response.ArtistReleaseSearchDataResponse
+import com.example.discogsapp.data.response.ArtistReleaseSearchResponse
+import com.example.discogsapp.data.response.ArtistSearchDataResponse
 import com.example.discogsapp.data.response.ArtistSearchResponse
-import com.example.discogsapp.data.response.ArtistSearchResult
-import com.example.discogsapp.data.response.Pagination
-import com.example.discogsapp.domain.model.ArtistDetailsModel
+import com.example.discogsapp.data.response.PaginationResponse
+import com.example.discogsapp.domain.model.ArtistDetailModel
 import com.example.discogsapp.domain.model.ArtistImageModel
 import com.example.discogsapp.domain.model.ArtistReleaseModel
-import com.example.discogsapp.domain.model.ArtistReleasesResultModel
-import com.example.discogsapp.domain.model.ArtistSearchResultModel
+import com.example.discogsapp.domain.model.ArtistReleaseSearchModel
+import com.example.discogsapp.domain.model.ArtistSearchModel
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.domain.model.PaginationModel
 
-fun ArtistSearchResponse.toDomain(): ArtistSearchResultModel =
-    ArtistSearchResultModel(
+fun ArtistSearchResponse.toDomain(): ArtistSearchModel =
+    ArtistSearchModel(
         pagination = pagination.toDomain(),
-        artists = results.map(ArtistSearchResult::toDomain),
+        artists = results.map(ArtistSearchDataResponse::toDomain),
     )
 
-fun ArtistSearchResult.toDomain(): ArtistSummaryModel =
+fun ArtistSearchDataResponse.toDomain(): ArtistSummaryModel =
     ArtistSummaryModel(
         id = id,
         title = title,
@@ -29,17 +29,17 @@ fun ArtistSearchResult.toDomain(): ArtistSummaryModel =
         type = type,
     )
 
-fun ArtistDetailsResponse.toDomain(): ArtistDetailsModel =
-    ArtistDetailsModel(
+fun ArtistDetailsResponse.toDomain(): ArtistDetailModel =
+    ArtistDetailModel(
         id = id,
         name = name,
         profile = profile.orEmpty(),
         realName = realName.orEmpty(),
         urls = urls.orEmpty(),
-        images = images.orEmpty().map(ArtistImage::toDomain),
+        images = images.orEmpty().map(ArtistImageResponse::toDomain),
     )
 
-fun ArtistImage.toDomain(): ArtistImageModel =
+fun ArtistImageResponse.toDomain(): ArtistImageModel =
     ArtistImageModel(
         uri = uri,
         smallUri = smallUri.orEmpty(),
@@ -47,24 +47,24 @@ fun ArtistImage.toDomain(): ArtistImageModel =
         height = height ?: 0,
     )
 
-fun ArtistReleasesResponse.toDomain(): ArtistReleasesResultModel =
-    ArtistReleasesResultModel(
+fun ArtistReleaseSearchResponse.toDomain(): ArtistReleaseSearchModel =
+    ArtistReleaseSearchModel(
         pagination = pagination.toDomain(),
-        releases = releases.map(ArtistRelease::toDomain),
+        releases = results.map(ArtistReleaseSearchDataResponse::toDomain),
     )
 
-fun ArtistRelease.toDomain(): ArtistReleaseModel =
+fun ArtistReleaseSearchDataResponse.toDomain(): ArtistReleaseModel =
     ArtistReleaseModel(
         id = id,
         title = title,
-        year = year?.toString() ?: "",
-        role = role.orEmpty(),
+        year = year.orEmpty(),
         type = type.orEmpty(),
         thumbnailUrl = thumbnailUrl.orEmpty(),
         label = label.orEmpty(),
+        genre = genre.orEmpty(),
     )
 
-fun Pagination.toDomain(): PaginationModel =
+fun PaginationResponse.toDomain(): PaginationModel =
     PaginationModel(
         page = page,
         perPage = perPage,
