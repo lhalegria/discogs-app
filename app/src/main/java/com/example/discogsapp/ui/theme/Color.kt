@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.example.discogsapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
@@ -10,3 +11,5 @@ val AccentOrangeLight = Color(0xFFFFCC80)
 val BackgroundLight = Color(0xFFF9F9FF)
 val BackgroundDark = Color(0xFF11131A)
 val SurfaceDark = Color(0xFF1B1D24)
+val ColorWhite = Color(0xFFFFFFFF)
+val ColorBlack = Color(0xFF111111)

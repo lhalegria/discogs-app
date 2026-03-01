@@ -36,6 +36,7 @@ fun TopBar(
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(R.string.back_button),
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier =
                 Modifier
                     .align(Alignment.CenterStart)
@@ -45,6 +46,7 @@ fun TopBar(
         Text(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
