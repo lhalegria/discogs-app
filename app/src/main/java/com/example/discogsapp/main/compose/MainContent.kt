@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -40,6 +41,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
 import com.example.discogsapp.common.compose.EmptyState
+import com.example.discogsapp.R
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
 import kotlinx.coroutines.flow.flowOf
@@ -70,9 +72,14 @@ fun MainContent(
         OutlinedTextField(
             value = state.query,
             onValueChange = onQueryChanged,
-            label = { Text(text = "Search artist") },
+            label = { Text(text = stringResource(R.string.search_artist)) },
             singleLine = true,
-            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(R.string.search_artist_icon_description),
+                )
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { onSearchSubmitted() }),
             modifier =
@@ -105,11 +112,11 @@ fun MainContent(
                 }
 
                 ContentState.EmptyBeforeSearch -> {
-                    EmptyState(message = "Search for an artist to get started.")
+                    EmptyState(message = stringResource(R.string.search_artist_empty_before_search))
                 }
 
                 ContentState.EmptyResults -> {
-                    EmptyState(message = "No artists found for your query.")
+                    EmptyState(message = stringResource(R.string.search_artist_empty_results))
                 }
 
                 ContentState.Results -> {
@@ -162,7 +169,7 @@ private fun MainContentLoading() {
 @Composable
 private fun MainContentError(error: LoadState.Error?) {
     Text(
-        text = error?.error?.message ?: "Failed to fetch artists. Please try again.",
+        text = error?.error?.message ?: stringResource(R.string.error_loading_artists),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.error,
         modifier = Modifier.padding(horizontal = 16.dp),
