@@ -23,6 +23,7 @@ espressoCore = "3.6.1"
 detekt = "1.23.6"
 ktlint = "12.1.2"
 mockk = "1.13.12"
+turbine = "1.1.0"
 compileSdk = "35"
 targetSdk = "35"
 minSdk = "24"
@@ -63,6 +64,7 @@ junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
