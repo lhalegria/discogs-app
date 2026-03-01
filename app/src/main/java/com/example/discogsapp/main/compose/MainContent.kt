@@ -42,6 +42,8 @@ import androidx.paging.compose.itemKey
 import coil.compose.SubcomposeAsyncImage
 import com.example.discogsapp.R
 import com.example.discogsapp.common.compose.EmptyState
+import com.example.discogsapp.common.compose.ErrorState
+import com.example.discogsapp.common.compose.LoadingState
 import com.example.discogsapp.domain.model.ArtistSummaryModel
 import com.example.discogsapp.main.viewmodel.MainState
 import kotlinx.coroutines.flow.flowOf
@@ -104,11 +106,15 @@ fun MainContent(
         ) { targetState ->
             when (targetState) {
                 ContentState.Loading -> {
-                    MainContentLoading()
+                    LoadingState(message = stringResource(R.string.loading_artists))
                 }
 
                 ContentState.Error -> {
-                    MainContentError(artists.loadState.refresh as? LoadState.Error)
+                    ErrorState(
+                        errorMessage = stringResource(R.string.error_loading_artists),
+                        onRetry = onSearchSubmitted,
+                        onGoBack = {},
+                    )
                 }
 
                 ContentState.EmptyBeforeSearch -> {
@@ -154,26 +160,6 @@ fun MainContent(
             }
         }
     }
-}
-
-@Composable
-private fun MainContentLoading() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun MainContentError(error: LoadState.Error?) {
-    Text(
-        text = error?.error?.message ?: stringResource(R.string.error_loading_artists),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.error,
-        modifier = Modifier.padding(horizontal = 16.dp),
-    )
 }
 
 @Composable

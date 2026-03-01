@@ -89,7 +89,6 @@ fun DetailContent(
     }
 }
 
-@Suppress("LongMethod")
 @Composable
 private fun DetailSuccessContent(
     artist: ArtistDetailModel,
@@ -97,9 +96,6 @@ private fun DetailSuccessContent(
     onClickLink: (String) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    val isAboutExpanded = remember { mutableStateOf(true) }
-    val isSitesExpanded = remember { mutableStateOf(false) }
-    val isMembersExpanded = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopBar(
@@ -118,77 +114,34 @@ private fun DetailSuccessContent(
             ) {
                 item {
                     artist.images.firstOrNull()?.let { image ->
-                        AsyncImage(
-                            model = image.uri,
-                            contentDescription = artist.name,
-                            contentScale = ContentScale.Crop,
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(300.dp)
-                                    .clip(RoundedCornerShape(8.dp)),
+                        ArtistImage(
+                            image = image,
+                            artist = artist.name,
                         )
                     }
                 }
 
                 if (artist.profile.isNotEmpty()) {
                     item {
-                        ExpandableSection(
-                            title = stringResource(R.string.about_artist),
-                            isExpanded = isAboutExpanded.value,
-                            onToggle = { isAboutExpanded.value = !isAboutExpanded.value },
-                        ) {
-                            if (artist.realName.isNotEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.artist_given_name, artist.realName),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(bottom = 8.dp),
-                                )
-                            }
-                            Text(
-                                text = artist.profile,
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
+                        ArtistProfile(
+                            realName = artist.realName,
+                            profile = artist.profile,
+                        )
                     }
                 }
 
                 if (artist.urls.isNotEmpty()) {
                     item {
-                        ExpandableSection(
-                            title = stringResource(R.string.artist_websites),
-                            isExpanded = isSitesExpanded.value,
-                            onToggle = { isSitesExpanded.value = !isSitesExpanded.value },
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                artist.urls.forEach { url ->
-                                    ClickableTextUrl(
-                                        url = url,
-                                        onClickLink = onClickLink,
-                                        modifier = Modifier.fillMaxWidth(),
-                                    )
-                                }
-                            }
-                        }
+                        ArtistWebsites(
+                            artistUrls = artist.urls,
+                            onClickLink = onClickLink,
+                        )
                     }
                 }
 
                 if (artist.members.isNotEmpty()) {
                     item {
-                        ExpandableSection(
-                            title = stringResource(R.string.artist_members),
-                            isExpanded = isMembersExpanded.value,
-                            onToggle = { isMembersExpanded.value = !isMembersExpanded.value },
-                        ) {
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                artist.members.forEach { member ->
-                                    MemberCard(member = member)
-                                }
-                            }
-                        }
+                        ArtistMembers(members = artist.members)
                     }
                 }
 
@@ -216,6 +169,92 @@ private fun DetailSuccessContent(
         },
         modifier = Modifier.fillMaxSize(),
     )
+}
+
+@Composable
+private fun ArtistImage(
+    image: ArtistImageModel,
+    artist: String,
+) {
+    AsyncImage(
+        model = image.uri,
+        contentDescription = artist,
+        contentScale = ContentScale.Crop,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .clip(RoundedCornerShape(8.dp)),
+    )
+}
+
+@Composable
+private fun ArtistProfile(
+    realName: String,
+    profile: String,
+) {
+    val isAboutExpanded = remember { mutableStateOf(true) }
+    ExpandableSection(
+        title = stringResource(R.string.about_artist),
+        isExpanded = isAboutExpanded.value,
+        onToggle = { isAboutExpanded.value = !isAboutExpanded.value },
+    ) {
+        if (realName.isNotEmpty()) {
+            Text(
+                text = stringResource(R.string.artist_given_name, realName),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
+        }
+        Text(
+            text = profile,
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
+}
+
+@Composable
+private fun ArtistWebsites(
+    artistUrls: List<String>,
+    onClickLink: (String) -> Unit,
+) {
+    val isSitesExpanded = remember { mutableStateOf(false) }
+    ExpandableSection(
+        title = stringResource(R.string.artist_websites),
+        isExpanded = isSitesExpanded.value,
+        onToggle = { isSitesExpanded.value = !isSitesExpanded.value },
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            artistUrls.forEach { url ->
+                ClickableTextUrl(
+                    url = url,
+                    onClickLink = onClickLink,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ArtistMembers(
+    members: List<ArtistMemberModel>,
+) {
+    val isMembersExpanded = remember { mutableStateOf(false) }
+    ExpandableSection(
+        title = stringResource(R.string.artist_members),
+        isExpanded = isMembersExpanded.value,
+        onToggle = { isMembersExpanded.value = !isMembersExpanded.value },
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            members.forEach { member ->
+                MemberCard(member = member)
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)

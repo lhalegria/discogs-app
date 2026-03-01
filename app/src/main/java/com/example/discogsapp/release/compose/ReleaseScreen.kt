@@ -1,5 +1,6 @@
 package com.example.discogsapp.release.compose
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,10 +14,12 @@ fun ReleaseScreen(
     navigateBack: () -> Unit,
     viewModel: ReleaseViewModel = hiltViewModel(),
 ) {
-    viewModel.setArtist(artist)
-
     val state by viewModel.state.collectAsState()
     val releases = viewModel.artistReleasePagingData.collectAsLazyPagingItems()
+
+    viewModel.setArtist(artist)
+
+    BackHandler { navigateBack() }
 
     ReleaseContent(
         state = state,

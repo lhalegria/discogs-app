@@ -5,6 +5,7 @@
     <string name="no_results">No results found.</string>
 
     <!--Main Screen-->
+    <string name="loading_artists">Loading artists…</string>
     <string name="search_artist">Search artist</string>
     <string name="search_artist_icon_description">Search</string>
     <string name="search_artist_empty_before_search">Search for an artist to get started.</string>
